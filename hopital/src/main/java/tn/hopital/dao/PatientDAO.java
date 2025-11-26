@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PatientDAO {
 
-    // ➤ Ajouter un patient
+    //  Ajouter un patient
     public void save(Patient p) throws SQLException {
         String sql = "INSERT INTO patient(nom, prenom, date_naissance, adresse, telephone) VALUES (?,?,?,?,?)";
 
@@ -32,7 +32,7 @@ public class PatientDAO {
         }
     }
 
-    // ➤ Voir tous les patients
+    //  Voir tous les patients
     public List<Patient> findAll() throws SQLException {
         List<Patient> list = new ArrayList<>();
         String sql = "SELECT * FROM patient ORDER BY nom";
@@ -48,7 +48,7 @@ public class PatientDAO {
         return list;
     }
 
-    // ➤ Trouver un patient par id
+    //  Trouver un patient par id
     public Patient findById(int id) throws SQLException {
         String sql = "SELECT * FROM patient WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -64,7 +64,7 @@ public class PatientDAO {
         return null;
     }
 
-    // ➤ Modifier un patient
+    //  Modifier un patient
     public void update(Patient p) throws SQLException {
         String sql = "UPDATE patient SET nom=?, prenom=?, date_naissance=?, adresse=?, telephone=? WHERE id=?";
 
@@ -82,7 +82,7 @@ public class PatientDAO {
         }
     }
 
-    // ➤ Supprimer un patient
+    // Supprimer un patient
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM patient WHERE id=?";
         try (Connection conn = DBConnection.getConnection();
@@ -92,7 +92,7 @@ public class PatientDAO {
         }
     }
 
-    // ➤ Méthode utilitaire
+    //  Méthode utilitaire
     private Patient map(ResultSet rs) throws SQLException {
         return new Patient(
                 rs.getInt("id"),
