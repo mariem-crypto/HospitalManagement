@@ -22,7 +22,17 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
 
         // Optionnel : si tu veux une icône plus tard
-        // primaryStage.getIcons().add(new Image("/tn/hopital/ui/img/hopital.png"));
+
+        // 👉 AJOUTE ÇA pour l’icône :
+        var iconUrl = getClass().getResource("/tn/hopital/ui/img/hopital.png");
+        System.out.println("URL icône = " + iconUrl); // juste pour vérifier
+
+        if (iconUrl != null) {
+            Image icon = new Image(iconUrl.toExternalForm());
+            primaryStage.getIcons().add(icon);
+        } else {
+            System.out.println(" Icône non trouvée !");
+        }
 
         primaryStage.show();
     }
