@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.hospital.hospitalmanagementproject.controller.HospitalController"
+            prefWidth="1000" prefHeight="700">
+
+    <top>
+        <HBox spacing="700" alignment="CENTER">
+            <Label text="Gestion de l'Hôpital"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <!-- Close Button -->
+            <Button text="X" onAction="#closeWindow"
+                    style="-fx-background-color: red; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane>
+
+            <!-- TAB PATIENTS -->
+            <Tab text="Patients">
+                <BorderPane>
+                    <center>
+                        <TableView fx:id="tablePatients">
+                            <columns>
+                                <TableColumn fx:id="colPatientId" text="ID" prefWidth="60"/>
+                                <TableColumn fx:id="colPatientNom" text="Nom" prefWidth="120"/>
+                                <TableColumn fx:id="colPatientPrenom" text="Prénom" prefWidth="120"/>
+                                <TableColumn fx:id="colPatientDateNaissance" text="Date Naissance" prefWidth="150"/>
+                                <TableColumn fx:id="colPatientAdresse" text="Adresse" prefWidth="200"/>
+                                <TableColumn fx:id="colPatientTelephone" text="Téléphone" prefWidth="100"/>
+                            </columns>
+                        </TableView>
+                    </center>
+
+                    <bottom>
+                        <VBox spacing="10">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+
+                            <GridPane hgap="10" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="25"/>
+                                    <ColumnConstraints percentWidth="75"/>
+                                </columnConstraints>
+
+                                <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtPatientNom" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="Prénom:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtPatientPrenom" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                <Label text="Date Naissance:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <DatePicker fx:id="dpPatientDateNaissance" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                <Label text="Adresse:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtPatientAdresse" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                                <Label text="Téléphone:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtPatientTelephone" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                            </GridPane>
+
+                            <HBox spacing="10">
+                                <Button text="Ajouter" onAction="#ajouterPatient"/>
+                                <Button text="Modifier" onAction="#modifierPatient"/>
+                                <Button text="Supprimer" onAction="#supprimerPatient"/>
+                                <Button text="Vider" onAction="#clearPatientForm"/>
+                            </HBox>
+                        </VBox>
+                    </bottom>
+                </BorderPane>
+            </Tab>
+
+            <!-- TAB MEDECINS -->
+            <Tab text="Médecins">
+                <BorderPane>
+                    <center>
+                        <TableView fx:id="tableMedecins">
+                            <columns>
+                                <TableColumn fx:id="colMedId" text="ID" prefWidth="60"/>
+                                <TableColumn fx:id="colMedNom" text="Nom" prefWidth="120"/>
+                                <TableColumn fx:id="colMedPrenom" text="Prénom" prefWidth="120"/>
+                                <TableColumn fx:id="colMedSpecialite" text="Spécialité" prefWidth="150"/>
+                                <TableColumn fx:id="colMedTelephone" text="Téléphone" prefWidth="100"/>
+                            </columns>
+                        </TableView>
+                    </center>
+
+                    <bottom>
+                        <VBox spacing="10">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+
+                            <GridPane hgap="10" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="25"/>
+                                    <ColumnConstraints percentWidth="75"/>
+                                </columnConstraints>
+
+                                <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtMedNom" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="Prénom:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtMedPrenom" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                <Label text="Spécialité:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtMedSpecialite" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                <Label text="Téléphone:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                <TextField fx:id="txtMedTelephone" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                            </GridPane>
+
+                            <HBox spacing="10">
+                                <Button text="Ajouter" onAction="#ajouterMedecin"/>
+                                <Button text="Modifier" onAction="#modifierMedecin"/>
+                                <Button text="Supprimer" onAction="#supprimerMedecin"/>
+                                <Button text="Vider" onAction="#clearMedForm"/>
+                            </HBox>
+                        </VBox>
+                    </bottom>
+                </BorderPane>
+            </Tab>
+
+            <!-- TAB RENDEZ-VOUS -->
+            <Tab text="Rendez-vous">
+                <BorderPane>
+                    <center>
+                        <TableView fx:id="tableRdv">
+                            <columns>
+                                <TableColumn fx:id="colRdvId" text="ID" prefWidth="60"/>
+                                <TableColumn fx:id="colRdvPatient" text="Patient" prefWidth="200"/>
+                                <TableColumn fx:id="colRdvMedecin" text="Médecin" prefWidth="200"/>
+                                <TableColumn fx:id="colRdvDate" text="Date et Heure" prefWidth="200"/>
+                            </columns>
+                        </TableView>
+                    </center>
+
+                    <bottom>
+                        <VBox spacing="10">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+
+                            <GridPane hgap="10" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="25"/>
+                                    <ColumnConstraints percentWidth="75"/>
+                                </columnConstraints>
+
+                                <Label text="Patient:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <ComboBox fx:id="cbRdvPatient" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                <Label text="Médecin:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <ComboBox fx:id="cbRdvMedecin" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                <Label text="Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <DatePicker fx:id="dpRdvDate" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                <Label text="Heure:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                <HBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                                    <Spinner fx:id="spRdvHour" prefWidth="60"/>
+                                    <Spinner fx:id="spRdvMinute" prefWidth="60"/>
+                                </HBox>
+                            </GridPane>
+
+                            <HBox spacing="10">
+                                <Button text="Planifier" onAction="#planifierRdv"/>
+                                <Button text="Supprimer" onAction="#supprimerRdv"/>
+                            </HBox>
+                        </VBox>
+                    </bottom>
+                </BorderPane>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>
