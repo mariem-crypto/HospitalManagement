@@ -1,32 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.hopital.ui.controller.MainController"
-            prefWidth="800" prefHeight="500">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.hopital.ui.controller.MainController">
 
-    <children>
-        <Label text="Bienvenue dans Hopital Management"
-               layoutX="220" layoutY="40"
-               style="-fx-font-size: 20px;"/>
+    <!-- Menu en haut -->
+    <top>
+        <MenuBar>
+            <Menu text="Fichier">
+                <MenuItem text="Quitter" onAction="#onQuitter" />
+            </Menu>
+            <Menu text="Gestion">
+                <MenuItem text="Patients" onAction="#onPatientsClick" />
+                <MenuItem text="Médecins" onAction="#onMedecinsClick" />
+                <MenuItem text="Rendez-vous" onAction="#onRendezVousClick" />
+            </Menu>
+            <Menu text="Aide">
+                <MenuItem text="À propos" />
+            </Menu>
+        </MenuBar>
+    </top>
 
-        <Button text="Gérer Patients"
-                layoutX="100" layoutY="150"
-                prefWidth="200" prefHeight="50"
-                fx:id="btnPatients"/>
+    <!-- Contenu central -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20">
+            <padding>
+                <Insets top="30" right="20" bottom="20" left="20"/>
+            </padding>
 
-        <Button text="Gérer Médecins"
-                layoutX="300" layoutY="150"
-                prefWidth="200" prefHeight="50"
-                fx:id="btnMedecins"/>
+            <Label fx:id="lblTitre"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-        <Button text="Gérer Rendez-vous"
-                layoutX="500" layoutY="150"
-                prefWidth="200" prefHeight="50"
-                fx:id="btnRdv"/>
-    </children>
+            <HBox alignment="CENTER" spacing="20">
+                <Button fx:id="btnPatients"
+                        text="Gérer les patients"
+                        prefWidth="180"
+                        onAction="#onPatientsClick"/>
 
-</AnchorPane>
+                <Button fx:id="btnMedecins"
+                        text="Gérer les médecins"
+                        prefWidth="180"
+                        onAction="#onMedecinsClick"/>
+
+                <Button fx:id="btnRendezVous"
+                        text="Gérer les rendez-vous"
+                        prefWidth="200"
+                        onAction="#onRendezVousClick"/>
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>
