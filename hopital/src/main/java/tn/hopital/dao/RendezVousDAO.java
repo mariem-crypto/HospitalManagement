@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RendezVousDAO {
 
-    // ➤ Ajouter RDV
+    //  Ajouter RDV
     public void save(RendezVous rdv) throws SQLException {
         String sql = "INSERT INTO rendezvous(patient_id, medecin_id, date_rdv) VALUES (?,?,?)";
 
@@ -29,7 +29,7 @@ public class RendezVousDAO {
         }
     }
 
-    // ➤ Voir tous les RDV (JOIN patient + medecin)
+    //  Voir tous les RDV (JOIN patient + medecin)
     public List<RendezVous> findAll() throws SQLException {
         List<RendezVous> list = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class RendezVousDAO {
         return list;
     }
 
-    // ➤ Supprimer RDV
+    //  Supprimer RDV
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM rendezvous WHERE id=?";
 
@@ -66,7 +66,7 @@ public class RendezVousDAO {
         }
     }
 
-    // ➤ Mapping ligne → RendezVous
+    //  Mapping ligne → RendezVous
     private RendezVous map(ResultSet rs) throws SQLException {
 
         // Patient

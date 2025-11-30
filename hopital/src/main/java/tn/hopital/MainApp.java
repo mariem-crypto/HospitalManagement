@@ -1,19 +1,20 @@
 package tn.hopital;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
-        Label label = new Label("Hello Hopital JavaFX !");
-        StackPane root = new StackPane(label);
+    public void start(Stage primaryStage) throws Exception {
+        // Chemin ABSOLU vers le FXML dans src/main/resources
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/tn/hopital/ui/view/MainView.fxml")
+        );
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(loader.load(), 900, 600);
         primaryStage.setTitle("Hospital Management");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -23,4 +24,5 @@ public class MainApp extends Application {
         launch(args);
     }
 }
+
  

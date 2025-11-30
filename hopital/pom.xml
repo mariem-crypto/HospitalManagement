@@ -19,6 +19,20 @@
 
     <dependencies>
 
+        <!-- JavaFX base -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- JavaFX graphics (contient Stage, Scene, etc.) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
         <!-- JavaFX controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -33,27 +47,34 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- Driver JDBC MySQL -->
+        <!-- Driver JDBC MySQL (correct coordinate) -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Plugin JavaFX pour lancer l'appli avec Maven -->
+
+            <!-- Plugin JavaFX pour lancer l'application -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <!-- Classe qui étend javafx.application.Application -->
                     <mainClass>tn.hopital.MainApp</mainClass>
+                    <launcher>maven</launcher>
+                    <jvmArgs>
+                        <jvmArg>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmArg>
+                    </jvmArgs>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
 </project>
+
