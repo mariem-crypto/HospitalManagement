@@ -192,7 +192,7 @@ public class HopitalService {
         if (medecin == null || medecin.getId() <= 0) {
             throw new IllegalArgumentException("Médecin invalide pour le rendez-vous");
         }
-        if (dateRdv.isBefore(LocalDateTime.now())) {
+        if (dateRdv.isAfter(LocalDateTime.now())) {
             throw new IllegalArgumentException("On ne peut pas planifier un rendez-vous dans le passé");
         }
 
