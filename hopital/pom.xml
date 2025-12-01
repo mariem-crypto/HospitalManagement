@@ -47,11 +47,18 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- Driver JDBC MySQL (correct coordinate) -->
+        <!-- Driver JDBC MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
+        </dependency>
+
+        <!-- 🔐 BCrypt pour hasher les mots de passe -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
 
     </dependencies>
@@ -68,7 +75,7 @@
                     <mainClass>tn.hopital.MainApp</mainClass>
                     <launcher>maven</launcher>
                     <jvmArgs>
-                        <jvmArg>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmArg>
+                      <jvmArg>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmArg>
                     </jvmArgs>
                 </configuration>
             </plugin>

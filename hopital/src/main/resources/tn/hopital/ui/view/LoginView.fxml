@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.hopital.ui.controller.LoginController"
+            stylesheets="@../css/login.css"
+            styleClass="login-background">
+
+    <center>
+        <VBox spacing="15" alignment="CENTER">
+            <padding>
+                <Insets top="25" right="30" bottom="25" left="30"/>
+            </padding>
+
+          
+
+            <Label text="Connexion administrateur"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <GridPane hgap="12" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label text="Nom d'utilisateur :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtUsername"
+                           promptText="Entrez votre nom"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Mot de passe :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <PasswordField fx:id="txtPassword"
+                               promptText="Entrez votre mot de passe"
+                               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <Button text="Se connecter"
+                    onAction="#onLogin"
+                    maxWidth="Infinity"
+                    style="-fx-font-size: 14px; -fx-padding: 8px 20px;"/>
+
+            <Label fx:id="lblMessage"
+                   style="-fx-text-fill: red;"/>
+        </VBox>
+    </center>
+
+</BorderPane>

@@ -1,6 +1,7 @@
 package tn.hopital.dao;
 
 import tn.hopital.model.Medecin;
+import tn.hopital.model.Specialite;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class MedecinDAO {
 
-    // ➤ Ajouter médecin
+    // ➤ Ajouter un médecin
     public void save(Medecin m) throws SQLException {
         String sql = "INSERT INTO medecin(nom, prenom, specialite, telephone) VALUES (?,?,?,?)";
 
@@ -17,7 +18,7 @@ public class MedecinDAO {
 
             ps.setString(1, m.getNom());
             ps.setString(2, m.getPrenom());
-            ps.setString(3, m.getSpecialite());
+            ps.setString(3, m.getSpecialite().name());   // ENUM → String
             ps.setString(4, m.getTelephone());
 
             ps.executeUpdate();
@@ -29,10 +30,9 @@ public class MedecinDAO {
         }
     }
 
-    // ➤ Voir tous les médecins
+    // ➤ Récupérer tous les médecins
     public List<Medecin> findAll() throws SQLException {
         List<Medecin> list = new ArrayList<>();
-
         String sql = "SELECT * FROM medecin ORDER BY nom";
 
         try (Connection conn = DBConnection.getConnection();
@@ -46,7 +46,7 @@ public class MedecinDAO {
         return list;
     }
 
-    // ➤ Trouver médecin par id
+    // ➤ Trouver un médecin par id
     public Medecin findById(int id) throws SQLException {
         String sql = "SELECT * FROM medecin WHERE id=?";
 
@@ -63,7 +63,7 @@ public class MedecinDAO {
         return null;
     }
 
-    // ➤ Modifier
+    // ➤ Modifier un médecin
     public void update(Medecin m) throws SQLException {
         String sql = "UPDATE medecin SET nom=?, prenom=?, specialite=?, telephone=? WHERE id=?";
 
@@ -72,7 +72,7 @@ public class MedecinDAO {
 
             ps.setString(1, m.getNom());
             ps.setString(2, m.getPrenom());
-            ps.setString(3, m.getSpecialite());
+            ps.setString(3, m.getSpecialite().name());  // ENUM → String
             ps.setString(4, m.getTelephone());
             ps.setInt(5, m.getId());
 
@@ -80,7 +80,7 @@ public class MedecinDAO {
         }
     }
 
-    // ➤ Supprimer
+    // ➤ Supprimer un médecin
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM medecin WHERE id=?";
 
@@ -92,14 +92,18 @@ public class MedecinDAO {
         }
     }
 
-    // ➤ Méthode utilitaire
+    // ➤ Convertir une ligne SQL → objet Medecin
     private Medecin map(ResultSet rs) throws SQLException {
+        String spec = rs.getString("specialite");
+        Specialite specialite = Specialite.valueOf(spec.toUpperCase());
+
         return new Medecin(
                 rs.getInt("id"),
                 rs.getString("nom"),
                 rs.getString("prenom"),
-                rs.getString("specialite"),
+                specialite,
                 rs.getString("telephone")
         );
     }
+
 }

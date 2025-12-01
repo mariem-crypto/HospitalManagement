@@ -80,7 +80,9 @@ public class RendezVousDAO {
         m.setId(rs.getInt("m_id"));
         m.setNom(rs.getString("m_nom"));
         m.setPrenom(rs.getString("m_prenom"));
-        m.setSpecialite(rs.getString("specialite"));
+        // 🔴 AVANT: m.setSpecialite(rs.getString("specialite"));
+        // ✅ MAINTENANT: conversion String -> Enum
+        m.setSpecialite(Specialite.valueOf(rs.getString("specialite")));
 
         // RDV
         LocalDateTime date = rs.getTimestamp("date_rdv").toLocalDateTime();
@@ -91,3 +93,4 @@ public class RendezVousDAO {
         );
     }
 }
+

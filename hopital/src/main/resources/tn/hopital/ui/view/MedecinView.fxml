@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.hopital.ui.controller.MedecinController">
+
+    <top>
+        <Label text="Gestion des médecins"
+               style="-fx-font-size: 18px; -fx-font-weight: bold;"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" left="10" right="10" bottom="10"/>
+            </padding>
+
+            <!-- Formulaire -->
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label text="Nom :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtNom" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Prénom :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtPrenom" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Spécialité :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <!-- ComboBox au lieu de TextField -->
+                <ComboBox fx:id="cbSpecialite" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Téléphone :" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtTelephone" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <!-- Boutons -->
+            <HBox spacing="10">
+                <Button text="Ajouter" onAction="#onAjouter"/>
+                <Button text="Modifier" onAction="#onModifier"/>
+                <Button text="Supprimer" onAction="#onSupprimer"/>
+                <Button text="Vider" onAction="#onClear"/>
+            </HBox>
+
+            <!-- Tableau des médecins -->
+            <TableView fx:id="tableMedecins" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colNom" text="Nom" prefWidth="120"/>
+                    <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="120"/>
+                    <TableColumn fx:id="colSpecialite" text="Spécialité" prefWidth="150"/>
+                    <TableColumn fx:id="colTelephone" text="Téléphone" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+</BorderPane>

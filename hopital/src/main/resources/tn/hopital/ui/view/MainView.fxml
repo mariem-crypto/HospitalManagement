@@ -1,63 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.hopital.ui.controller.MainController">
+            fx:controller="tn.hopital.ui.controller.MainController"
+            style="-fx-background-color: linear-gradient(to bottom, #e9f0fb, #ffffff);">
 
     <!-- Menu en haut -->
     <top>
-        <MenuBar>
-            <Menu text="Fichier">
-                <MenuItem text="Quitter" onAction="#onQuitter" />
-            </Menu>
-            <Menu text="Gestion">
-                <MenuItem text="Patients" onAction="#onPatientsClick" />
-                <MenuItem text="Médecins" onAction="#onMedecinsClick" />
-                <MenuItem text="Rendez-vous" onAction="#onRendezVousClick" />
-            </Menu>
-            <Menu text="Aide">
-                <MenuItem text="À propos" />
-            </Menu>
-        </MenuBar>
+        <VBox spacing="5">
+            <MenuBar>
+                <Menu text="Fichier">
+                    <MenuItem text="Quitter" onAction="#onQuitter" />
+                </Menu>
+                <Menu text="Gestion">
+                    <MenuItem text="Patients" onAction="#onPatientsClick" />
+                    <MenuItem text="Médecins" onAction="#onMedecinsClick" />
+                    <MenuItem text="Rendez-vous" onAction="#onRendezVousClick" />
+                </Menu>
+                <Menu text="Aide">
+                    <MenuItem text="À propos" />
+                </Menu>
+            </MenuBar>
+
+            <!-- Bandeau avec titre + bouton Déconnexion -->
+            <HBox alignment="CENTER_RIGHT" spacing="10"
+                  style="-fx-background-color: #ffffff; -fx-border-color: #d0d7e2; -fx-border-width: 0 0 1 0;">
+                <padding>
+                    <Insets top="8" right="15" bottom="8" left="15"/>
+                </padding>
+
+                <!-- Titre à gauche -->
+                <Label text="Gestion d'Hôpital"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold;"
+                       HBox.hgrow="ALWAYS"/>
+
+                <!-- Bouton Déconnexion à droite -->
+                <Button fx:id="btnLogout"
+                        text="Déconnexion"
+                        onAction="#onLogout"
+                        style="-fx-background-color: #d9534f; -fx-text-fill: white;"/>
+            </HBox>
+        </VBox>
     </top>
 
     <!-- Contenu central -->
     <center>
         <VBox alignment="TOP_CENTER" spacing="20">
             <padding>
-                <Insets top="30" right="20" bottom="20" left="20"/>
+                <Insets top="40" right="20" bottom="20" left="20"/>
             </padding>
 
+            <!-- Titre de la section -->
             <Label fx:id="lblTitre"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+                   text="Tableau de bord"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
 
-            <HBox alignment="CENTER" spacing="20">
-                <Button fx:id="btnPatients"
-                        text="Gérer les patients"
-                        prefWidth="180"
-                        onAction="#onPatientsClick"/>
+            <!-- Carte centrale avec les boutons -->
+            <VBox spacing="25" alignment="CENTER"
+                  maxWidth="500"
+                  style="-fx-background-color: #ffffff;
+                         -fx-background-radius: 10;
+                         -fx-padding: 25;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 2);">
 
-                <Button fx:id="btnMedecins"
-                        text="Gérer les médecins"
-                        prefWidth="180"
-                        onAction="#onMedecinsClick"/>
+                <Label text="Choisissez une section à gérer :"
+                       style="-fx-font-size: 14px;"/>
+
+                <HBox alignment="CENTER" spacing="20">
+                    <Button fx:id="btnPatients"
+                            text="Gérer les patients"
+                            prefWidth="180"
+                            style="-fx-font-size: 14px; -fx-padding: 10 15 10 15;"
+                            onAction="#onPatientsClick"/>
+
+                    <Button fx:id="btnMedecins"
+                            text="Gérer les médecins"
+                            prefWidth="180"
+                            style="-fx-font-size: 14px; -fx-padding: 10 15 10 15;"
+                            onAction="#onMedecinsClick"/>
+                </HBox>
 
                 <Button fx:id="btnRendezVous"
                         text="Gérer les rendez-vous"
-                        prefWidth="200"
+                        prefWidth="220"
+                        style="-fx-font-size: 14px; -fx-padding: 10 15 10 15;"
                         onAction="#onRendezVousClick"/>
-            </HBox>
+            </VBox>
         </VBox>
     </center>
 
 </BorderPane>
+

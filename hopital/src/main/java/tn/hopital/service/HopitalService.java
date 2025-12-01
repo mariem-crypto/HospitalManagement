@@ -1,11 +1,14 @@
 package tn.hopital.service;
 
+import tn.hopital.dao.AdminDAO;
 import tn.hopital.dao.MedecinDAO;
 import tn.hopital.dao.PatientDAO;
 import tn.hopital.dao.RendezVousDAO;
+import tn.hopital.model.Admin;
 import tn.hopital.model.Medecin;
 import tn.hopital.model.Patient;
 import tn.hopital.model.RendezVous;
+import tn.hopital.util.PasswordUtil;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -16,26 +19,55 @@ public class HopitalService {
     private final PatientDAO patientDAO;
     private final MedecinDAO medecinDAO;
     private final RendezVousDAO rendezVousDAO;
+    private final AdminDAO adminDAO;   // 🔹 nouveau
 
     public HopitalService() {
         this.patientDAO = new PatientDAO();
         this.medecinDAO = new MedecinDAO();
         this.rendezVousDAO = new RendezVousDAO();
+        this.adminDAO = new AdminDAO();   // 🔹 initialisation
     }
 
-    // PATIENTS  //
+    // ================== LOGIN ADMIN ================== //
+
+    /**
+     * Vérifie le login d'un administrateur.
+     * @param username login saisi
+     * @param password mot de passe en clair (saisi dans l'UI)
+     * @return l'objet Admin si OK
+     * @throws IllegalArgumentException si login/mot de passe incorrect
+     */
+    public Admin login(String username, String password) {
+        try {
+            Admin admin = adminDAO.findByUsername(username);
+            if (admin == null) {
+                throw new IllegalArgumentException("Utilisateur inconnu");
+            }
+
+            // Vérification du mot de passe avec BCrypt
+            boolean ok = PasswordUtil.checkPassword(password, admin.getPassword());
+            if (!ok) {
+                throw new IllegalArgumentException("Mot de passe incorrect");
+            }
+
+            return admin;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la tentative de connexion", e);
+        }
+    }
+
+    // ================== PATIENTS ================== //
 
     public List<Patient> listerPatients() {
         try {
             return patientDAO.findAll();
         } catch (SQLException e) {
-            // Ici on pourrait logger l'erreur ou lancer une exception métier
             throw new RuntimeException("Erreur lors du chargement des patients", e);
         }
     }
 
     public void ajouterPatient(Patient p) {
-        // Exemple de règle métier simple :
         if (p.getNom() == null || p.getNom().isBlank()) {
             throw new IllegalArgumentException("Le nom du patient est obligatoire");
         }
@@ -69,7 +101,7 @@ public class HopitalService {
         }
     }
 
-    //MEDECINS //
+    // ================== MEDECINS ================== //
 
     public List<Medecin> listerMedecins() {
         try {
@@ -83,7 +115,7 @@ public class HopitalService {
         if (m.getNom() == null || m.getNom().isBlank()) {
             throw new IllegalArgumentException("Le nom du médecin est obligatoire");
         }
-        if (m.getSpecialite() == null || m.getSpecialite().isBlank()) {
+        if (m.getSpecialite() == null) {
             throw new IllegalArgumentException("La spécialité du médecin est obligatoire");
         }
 
@@ -113,7 +145,7 @@ public class HopitalService {
         }
     }
 
-    // RENDEZ-VOUS //
+    // ================== RENDEZ-VOUS ================== //
 
     public List<RendezVous> listerRendezVous() {
         try {
@@ -151,3 +183,4 @@ public class HopitalService {
         }
     }
 }
+

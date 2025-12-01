@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.hopital.ui.controller.RendezVousController">
+
+    <top>
+        <Label text="Gestion des rendez-vous"
+               style="-fx-font-size: 18px; -fx-font-weight: bold;"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" left="10" right="10" bottom="10"/>
+            </padding>
+
+            <!-- Formulaire -->
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label text="Patient :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="cbPatient" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Médecin :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="cbMedecin" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Date :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="dpDate" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Heure (HH:mm) :" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtHeure" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <!-- Boutons -->
+            <HBox spacing="10">
+                <Button text="Ajouter" onAction="#onAjouter"/>
+                <Button text="Supprimer" onAction="#onSupprimer"/>
+                <Button text="Vider" onAction="#onClear"/>
+            </HBox>
+
+            <!-- Tableau des rendez-vous -->
+            <TableView fx:id="tableRdv" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colPatient" text="Patient" prefWidth="180"/>
+                    <TableColumn fx:id="colMedecin" text="Médecin" prefWidth="180"/>
+                    <TableColumn fx:id="colDateHeure" text="Date &amp; Heure" prefWidth="180"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+</BorderPane>

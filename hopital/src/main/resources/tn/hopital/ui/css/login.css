@@ -1,0 +1,7 @@
+/* Style appliqué au BorderPane de LoginView */
+.login-background {
+    -fx-background-image: url("/tn/hopital/ui/img/log.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}

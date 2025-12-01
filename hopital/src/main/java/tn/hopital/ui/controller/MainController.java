@@ -23,7 +23,11 @@ public class MainController {
     @FXML
     private Button btnRendezVous;
 
-    // Service métier (tu pourras t'en servir si besoin)
+    // Bouton de déconnexion (assure-toi d'avoir un fx:id="btnLogout" dans MainView.fxml)
+    @FXML
+    private Button btnLogout;
+
+    // Service métier
     private final HopitalService service = new HopitalService();
 
     @FXML
@@ -45,8 +49,7 @@ public class MainController {
             stage.setTitle("Gestion des patients");
             stage.setScene(scene);
             stage.initModality(Modality.WINDOW_MODAL);
-            // Optionnel : rattacher à la fenêtre principale
-            // stage.initOwner(btnPatients.getScene().getWindow());
+            // stage.initOwner(btnPatients.getScene().getWindow()); // optionnel
 
             stage.show();
         } catch (Exception e) {
@@ -55,21 +58,76 @@ public class MainController {
         }
     }
 
-    // ➤ (Plus tard) ouvrir la fenêtre de gestion des médecins
+    // ➤ Ouvrir la fenêtre de gestion des médecins
     @FXML
     private void onMedecinsClick() {
-        System.out.println("Médecins cliqué (à implémenter)");
-        // Tu feras pareil que pour PatientView.fxml avec MedecinView.fxml
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/tn/hopital/ui/view/MedecinView.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 800, 600);
+
+            Stage stage = new Stage();
+            stage.setTitle("Gestion des médecins");
+            stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de l'ouverture de la fenêtre Médecins.");
+        }
     }
 
-    // ➤ (Plus tard) ouvrir la fenêtre de gestion des rendez-vous
+    // ➤ Ouvrir la fenêtre de gestion des rendez-vous
     @FXML
     private void onRendezVousClick() {
-        System.out.println("Rendez-vous cliqué (à implémenter)");
-        // Idem : ouvrir RendezVousView.fxml
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/tn/hopital/ui/view/RendezVousView.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 800, 600);
+
+            Stage stage = new Stage();
+            stage.setTitle("Gestion des rendez-vous");
+            stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            // stage.initOwner(btnRendezVous.getScene().getWindow()); // optionnel
+
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de l'ouverture de la fenêtre Rendez-vous.");
+        }
     }
 
-    // ➤ Quitter l'application (appelé par le MenuItem Quitter)
+    // ➤ Déconnexion : fermer la fenêtre principale et revenir à l'écran de login
+    @FXML
+    private void onLogout() {
+        try {
+            // Charger l'écran de login
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/tn/hopital/ui/view/LoginView.fxml")
+            );
+            Scene scene = new Scene(loader.load(), 400, 250);
+
+            Stage loginStage = new Stage();
+            loginStage.setTitle("Login - Gestion d'Hôpital");
+            loginStage.setScene(scene);
+            loginStage.setResizable(false);
+            loginStage.show();
+
+            // Fermer la fenêtre principale
+            Stage currentStage = (Stage) lblTitre.getScene().getWindow();
+            currentStage.close();
+
+            System.out.println("Déconnexion effectuée, retour à l'écran de login.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la déconnexion.");
+        }
+    }
+
+    // ➤ Quitter complètement l'application
     @FXML
     private void onQuitter() {
         System.out.println("Application fermée.");

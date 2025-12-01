@@ -5,20 +5,19 @@ public class Medecin {
     private int id;
     private String nom;
     private String prenom;
-    private String specialite;
+    private Specialite specialite;
     private String telephone;
 
-    public Medecin() {
-    }
+    public Medecin() {}
 
-    public Medecin(String nom, String prenom, String specialite, String telephone) {
+    public Medecin(String nom, String prenom, Specialite specialite, String telephone) {
         this.nom = nom;
         this.prenom = prenom;
         this.specialite = specialite;
         this.telephone = telephone;
     }
 
-    public Medecin(int id, String nom, String prenom, String specialite, String telephone) {
+    public Medecin(int id, String nom, String prenom, Specialite specialite, String telephone) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -51,11 +50,11 @@ public class Medecin {
         this.prenom = prenom;
     }
 
-    public String getSpecialite() {
+    public Specialite getSpecialite() {
         return specialite;
     }
 
-    public void setSpecialite(String specialite) {
+    public void setSpecialite(Specialite specialite) {
         this.specialite = specialite;
     }
 
@@ -72,3 +71,4 @@ public class Medecin {
         return nom + " " + prenom + " (" + specialite + ")";
     }
 }
+
