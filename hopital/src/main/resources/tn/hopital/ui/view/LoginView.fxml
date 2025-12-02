@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -14,40 +12,51 @@
             styleClass="login-background">
 
     <center>
-        <VBox spacing="15" alignment="CENTER">
+        <VBox spacing="30" alignment="CENTER" maxWidth="380">
             <padding>
-                <Insets top="25" right="30" bottom="25" left="30"/>
+                <Insets top="50" right="50" bottom="50" left="50"/>
             </padding>
 
-          
+            <!-- Titre -->
+            <Label text="Login"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #333;"/>
 
-            <Label text="Connexion administrateur"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-
-            <GridPane hgap="12" vgap="12">
-                <columnConstraints>
-                    <ColumnConstraints halignment="RIGHT"/>
-                    <ColumnConstraints hgrow="ALWAYS"/>
-                </columnConstraints>
-
-                <Label text="Nom d'utilisateur :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <!-- Champ utilisateur -->
+            <VBox spacing="8">
+                <Label text="Nom d'utilisateur" 
+                       style="-fx-text-fill: #555; -fx-font-weight: 600;"/>
                 <TextField fx:id="txtUsername"
-                           promptText="Entrez votre nom"
-                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                           promptText="Entrez votre nom d'utilisateur"
+                           prefHeight="45"
+                           styleClass="text-field-rounded"/>
+            </VBox>
 
-                <Label text="Mot de passe :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <!-- Champ mot de passe -->
+            <VBox spacing="8">
+                <Label text="Mot de passe" 
+                       style="-fx-text-fill: #555; -fx-font-weight: 600;"/>
                 <PasswordField fx:id="txtPassword"
                                promptText="Entrez votre mot de passe"
-                               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            </GridPane>
+                               prefHeight="45"
+                               styleClass="text-field-rounded"/>
+            </VBox>
 
+            <!-- Bouton Se connecter (centré sous les champs) -->
             <Button text="Se connecter"
                     onAction="#onLogin"
-                    maxWidth="Infinity"
-                    style="-fx-font-size: 14px; -fx-padding: 8px 20px;"/>
+                    prefWidth="280"
+                    prefHeight="48"
+                    styleClass="btn-login">
+                <font>
+                    <Font name="System Bold" size="16"/>
+                </font>
+            </Button>
 
+            <!-- Message d'erreur -->
             <Label fx:id="lblMessage"
-                   style="-fx-text-fill: red;"/>
+                   text=""
+                   style="-fx-text-fill: #e74c3c; -fx-font-size: 13px;"
+                   alignment="CENTER"/>
         </VBox>
     </center>
 

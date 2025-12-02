@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="tn.hopital.ui.controller.MainController"
-            style="-fx-background-color: linear-gradient(to bottom, #e9f0fb, #ffffff);">
+            styleClass="main-background"
+            stylesheets="@../css/main.css">
 
-    <!-- Menu en haut -->
+    <!-- ==================== TOP : Menu + Déconnexion ==================== -->
     <top>
-        <VBox spacing="5">
-            <MenuBar>
+        <VBox styleClass="top-bar">
+            <MenuBar styleClass="custom-menu-bar">
                 <Menu text="Fichier">
-                    <MenuItem text="Quitter" onAction="#onQuitter" />
+                    <MenuItem text="Quitter l'application" onAction="#onQuitter" />
                 </Menu>
                 <Menu text="Gestion">
                     <MenuItem text="Patients" onAction="#onPatientsClick" />
@@ -27,72 +28,69 @@
                 </Menu>
             </MenuBar>
 
-            <!-- Bandeau avec titre + bouton Déconnexion -->
-            <HBox alignment="CENTER_RIGHT" spacing="10"
-                  style="-fx-background-color: #ffffff; -fx-border-color: #d0d7e2; -fx-border-width: 0 0 1 0;">
+            <!-- Bouton Déconnexion à droite -->
+            <HBox alignment="CENTER_RIGHT" styleClass="logout-bar">
                 <padding>
-                    <Insets top="8" right="15" bottom="8" left="15"/>
+                    <Insets top="8" right="20" bottom="8" left="20"/>
                 </padding>
-
-                <!-- Titre à gauche -->
-                <Label text="Gestion d'Hôpital"
-                       style="-fx-font-size: 18px; -fx-font-weight: bold;"
-                       HBox.hgrow="ALWAYS"/>
-
-                <!-- Bouton Déconnexion à droite -->
                 <Button fx:id="btnLogout"
                         text="Déconnexion"
                         onAction="#onLogout"
-                        style="-fx-background-color: #d9534f; -fx-text-fill: white;"/>
+                        styleClass="btn-logout">
+                    <graphic>
+                        <Label text="Logout" style="-fx-font-family: 'Segoe UI Emoji';"/>
+                    </graphic>
+                </Button>
             </HBox>
         </VBox>
     </top>
 
-    <!-- Contenu central -->
+    <!-- ==================== CENTER : Contenu principal ==================== -->
     <center>
-        <VBox alignment="TOP_CENTER" spacing="20">
+        <VBox alignment="CENTER" spacing="40" styleClass="content-pane">
             <padding>
-                <Insets top="40" right="20" bottom="20" left="20"/>
+                <Insets top="60" right="40" bottom="60" left="40"/>
             </padding>
 
-            <!-- Titre de la section -->
-            <Label fx:id="lblTitre"
-                   text="Tableau de bord"
-                   style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
-
-            <!-- Carte centrale avec les boutons -->
-            <VBox spacing="25" alignment="CENTER"
-                  maxWidth="500"
-                  style="-fx-background-color: #ffffff;
-                         -fx-background-radius: 10;
-                         -fx-padding: 25;
-                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 2);">
-
-                <Label text="Choisissez une section à gérer :"
-                       style="-fx-font-size: 14px;"/>
-
-                <HBox alignment="CENTER" spacing="20">
-                    <Button fx:id="btnPatients"
-                            text="Gérer les patients"
-                            prefWidth="180"
-                            style="-fx-font-size: 14px; -fx-padding: 10 15 10 15;"
-                            onAction="#onPatientsClick"/>
-
-                    <Button fx:id="btnMedecins"
-                            text="Gérer les médecins"
-                            prefWidth="180"
-                            style="-fx-font-size: 14px; -fx-padding: 10 15 10 15;"
-                            onAction="#onMedecinsClick"/>
-                </HBox>
-
-                <Button fx:id="btnRendezVous"
-                        text="Gérer les rendez-vous"
-                        prefWidth="220"
-                        style="-fx-font-size: 14px; -fx-padding: 10 15 10 15;"
-                        onAction="#onRendezVousClick"/>
+            <!-- Titre principal -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="Système de Gestion Hospitalière"
+                       styleClass="main-title"/>
+                <Label fx:id="lblTitre"
+                       text="Bienvenue, Administrateur"
+                       styleClass="subtitle"/>
             </VBox>
+
+            <!-- Cartes d'action -->
+            <HBox alignment="CENTER" spacing="40">
+                <!-- Patients -->
+                <VBox alignment="CENTER" spacing="15" styleClass="card"
+                      onMouseClicked="#onPatientsClick">
+                    <Label text="Patients" styleClass="card-icon"/>
+                    <Label text="Gérer les patients" styleClass="card-title"/>
+                    <Label text="Ajouter • Modifier • Supprimer • Consulter" 
+                           styleClass="card-desc"/>
+                </VBox>
+
+                <!-- Médecins -->
+                <VBox alignment="CENTER" spacing="15" styleClass="card"
+                      onMouseClicked="#onMedecinsClick">
+                    <Label text="Médecins" styleClass="card-icon"/>
+                    <Label text="Gérer les médecins" styleClass="card-title"/>
+                    <Label text="Planning • Spécialités • Disponibilité" 
+                           styleClass="card-desc"/>
+                </VBox>
+
+                <!-- Rendez-vous -->
+                <VBox alignment="CENTER" spacing="15" styleClass="card"
+                      onMouseClicked="#onRendezVousClick">
+                    <Label text="Calendrier" styleClass="card-icon"/>
+                    <Label text="Gérer les rendez-vous" styleClass="card-title"/>
+                    <Label text="Prendre RDV • Annuler • Historique" 
+                           styleClass="card-desc"/>
+                </VBox>
+            </HBox>
         </VBox>
     </center>
 
 </BorderPane>
-

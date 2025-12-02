@@ -1,0 +1,110 @@
+/* ==================== FOND ==================== */
+.main-background {
+    -fx-background-image: url('../img/photo_hopital.png');
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    /* Voile bleu très léger pour cohérence avec l'image médecin en blouse */
+    -fx-background-color: linear-gradient(to bottom, rgba(0, 100, 180, 0.25), rgba(0, 50, 100, 0.4));
+}
+
+/* ==================== BARRE SUPÉRIEURE (transparente + moderne) ==================== */
+.top-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.12);   /* Très léger voile blanc */
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.custom-menu-bar {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+.custom-menu-bar .menu-item {
+    -fx-text-fill: white;
+}
+
+.custom-menu-bar .menu-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Bouton Déconnexion (discret, moderne, en haut à droite) */
+.btn-logout {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: rgba(255, 255, 255, 0.4);
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.btn-logout:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 5, 0, 0, 1);
+}
+
+.btn-logout:pressed {
+    -fx-background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* ==================== TITRE BIEN VISIBLE ==================== */
+.main-title {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 8, 0, 0, 4);
+    -fx-font-family: "Segoe UI";
+}
+
+.subtitle {
+    -fx-font-size: 20px;
+    -fx-text-fill: #bbf;
+    -fx-font-style: italic;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0, 0, 1);
+}
+
+/* ==================== CARTES (comme dans ta maquette) ==================== */
+.card {
+    -fx-background-color: rgba(255, 255, 255, 0.96);
+    -fx-background-radius: 24;
+    -fx-padding: 32 28;
+    -fx-min-width: 280;
+    -fx-min-height: 180;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0.25, 0, 10);
+    -fx-cursor: hand;
+    -fx-alignment: center;
+    -fx-spacing: 12;
+    -fx-border-radius: 24;
+    -fx-border-color: rgba(0,0,0,0.05);
+    -fx-border-width: 1;
+}
+
+.card:hover {
+    -fx-scale-x: 1.06;
+    -fx-scale-y: 1.06;
+    -fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.5), 30, 0.4, 0, 15);
+    -fx-background-color: #ffffff;
+}
+
+.card-icon {
+    -fx-font-size: 52px;
+}
+
+.card-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.card-desc {
+    -fx-font-size: 13.5px;
+    -fx-text-fill: #7f8c8d;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}

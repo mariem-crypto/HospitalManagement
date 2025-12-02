@@ -1,7 +1,59 @@
-/* Style appliqué au BorderPane de LoginView */
+/* Fond avec image + dégradé sombre pour lisibilité */
 .login-background {
-    -fx-background-image: url("/tn/hopital/ui/img/log.jpg");
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
+    -fx-background-image: url('../img/log.jpg');          /* Chemin vers ton image */
+    -fx-background-size: cover;                                     /* Remplit tout l'écran */
     -fx-background-position: center center;
+    
+    /* Dégradé sombre par-dessus l'image pour que le formulaire reste lisible */
+    -fx-background-color: linear-gradient(to bottom, 
+        rgba(0, 0, 0, 0.4), 
+        rgba(0, 0, 0, 0.6));
+}
+
+/* Option alternative : image + dégradé coloré bleu/gris (très élégant) */
+/*
+.login-background {
+    -fx-background-image: url('../images/login-bg.jpg');
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-color: linear-gradient(135deg, 
+        rgba(42, 115, 255, 0.7), 
+        rgba(100, 150, 255, 0.5));
+}
+*/
+
+.text-field-rounded {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1.5;
+    -fx-padding: 0 15;
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+.text-field-rounded:focused {
+    -fx-border-color: #2a73ff;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, #2a73ff, 15, 0.3, 0, 0);
+}
+
+.btn-login {
+    -fx-background-color: #2a73ff;
+    -fx-text-fill: white;
+    -fx-background-radius: 14;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0, 0, 3);
+}
+
+.btn-login:hover {
+    -fx-background-color: #1a63e0;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.btn-login:pressed {
+    -fx-background-color: #1050c7;
 }
