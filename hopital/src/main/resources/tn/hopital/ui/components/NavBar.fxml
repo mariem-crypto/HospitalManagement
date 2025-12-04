@@ -20,10 +20,10 @@
     <Label text="🏥 Gestion d'hôpital"
            styleClass="nav-title"/>
 
-    <!-- Espace flexible au milieu -->
+    <!-- Espace flexible entre gauche et droite -->
     <Region HBox.hgrow="ALWAYS"/>
 
-    <!-- Boutons à droite -->
+    <!-- Boutons du menu -->
     <HBox spacing="12" alignment="CENTER_RIGHT">
 
         <Button fx:id="btnPatients"
@@ -41,6 +41,13 @@
                 onAction="#onRdv"
                 styleClass="nav-btn"/>
 
+        <!-- 👉 Nouveau bouton ChatBot -->
+        <Button fx:id="btnChatBot"
+                text="🤖 ChatBot"
+                onAction="#onChatBot"
+                styleClass="nav-btn"/>
+
+        <!-- Déconnexion -->
         <Button fx:id="btnLogout"
                 text="Déconnexion"
                 onAction="#onLogout"

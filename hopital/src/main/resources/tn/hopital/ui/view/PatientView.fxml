@@ -1,102 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<?import javafx.fxml.FXML?>
-<?import javafx.fxml.FXMLLoader?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.hopital.ui.controller.PatientController"
-            styleClass="patient-background"
-            stylesheets="@../css/patient.css">
+<BorderPane styleClass="patient-background" stylesheets="@../css/patient.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.hopital.ui.controller.PatientController">
 
     <!-- ==================== BARRE DU HAUT ==================== -->
     <top>
         <!-- On empile la NavBar + le titre de la page -->
-        <VBox>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
 
             <!-- 🔹 Barre de navigation commune -->
-            <fx:include source="../components/NavBar.fxml"/>
+            <fx:include source="../components/NavBar.fxml" />
 
             <!-- 🔹 Bandeau titre spécifique à la page Patients -->
-            <VBox styleClass="top-bar">
-                <Label text="Gestion des Patients"
-                       styleClass="page-title"/>
-                <Separator styleClass="separator"/>
+            <VBox alignment="CENTER" prefHeight="55.0" styleClass="top-bar">
+                <Label styleClass="page-title" text="Gestion des Patients" />
+                <Separator styleClass="separator" />
+              <VBox alignment="CENTER" spacing="5.0" styleClass="main-card">
+                  <padding>
+                      <Insets bottom="40.0" left="50.0" right="50.0" top="35.0" />
+                  </padding>
+      
+                  <!-- ==================== FORMULAIRE ==================== -->
+                  <VBox styleClass="form-section">
+                      <Label prefHeight="32.0" prefWidth="226.0" styleClass="section-title" text="Informations du patient" />
+      
+                      <GridPane hgap="20" styleClass="form-grid" vgap="5.0">
+                          <columnConstraints>
+                              <ColumnConstraints halignment="RIGHT" minWidth="140" />
+                              <ColumnConstraints hgrow="ALWAYS" />
+                          </columnConstraints>
+      
+                          <!-- Ligne 1 -->
+                          <Label styleClass="field-label" text="Nom :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                          <TextField fx:id="txtNom" promptText="Nom de famille" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      
+                          <!-- Ligne 2 -->
+                          <Label styleClass="field-label" text="Prénom :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                          <TextField fx:id="txtPrenom" promptText="Prénom" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      
+                          <!-- Ligne 3 -->
+                          <Label styleClass="field-label" text="Date de naissance :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                          <DatePicker fx:id="dpDateNaissance" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      
+                          <!-- Ligne 4 -->
+                          <Label styleClass="field-label" text="Adresse :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                          <TextField fx:id="txtAdresse" promptText="Rue, code postal, ville" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      
+                          <!-- Ligne 5 -->
+                          <Label styleClass="field-label" text="Téléphone :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                          <TextField fx:id="txtTelephone" promptText="Ex: 99 123 456" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                      </GridPane>
+      
+                      <!-- ==================== BOUTONS D'ACTION ==================== -->
+                      <HBox alignment="CENTER_RIGHT" prefHeight="5.0" prefWidth="634.0" spacing="15" styleClass="button-bar">
+                          <Button onAction="#onAjouter" styleClass="btn-primary btn-large" text="Ajouter" />
+                          <Button onAction="#onModifier" styleClass="btn-success btn-large" text="Modifier" />
+                          <Button onAction="#onSupprimer" styleClass="btn-danger btn-large" text="Supprimer" />
+                          <Button onAction="#onClear" styleClass="btn-secondary btn-large" text="Vider" />
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                      </HBox>
+                  </VBox>
+      
+                  <!-- ==================== TABLEAU DES PATIENTS ==================== -->
+                  <VBox minHeight="250.0" styleClass="table-section">
+                      <Label styleClass="section-title" text="Liste des patients enregistrés" />
+                      <TableView fx:id="tablePatients" prefHeight="214.0" prefWidth="950.0" styleClass="modern-table">
+                          <columns>
+                              <TableColumn fx:id="colId" prefWidth="123.19998013973236" text="ID" />
+                              <TableColumn fx:id="colNom" prefWidth="129.5999984741211" text="Nom" />
+                              <TableColumn fx:id="colPrenom" prefWidth="141.60003662109375" text="Prénom" />
+                              <TableColumn fx:id="colDateNaissance" prefWidth="168.79998779296875" text="Naissance" />
+                              <TableColumn fx:id="colTelephone" prefWidth="157.60003662109375" text="Téléphone" />
+                              <TableColumn fx:id="colAdresse" prefWidth="177.60003662109375" text="Adresse" />
+                          </columns>
+                      </TableView>
+                  </VBox>
+              </VBox>
             </VBox>
 
         </VBox>
     </top>
-
-    <!-- ==================== CONTENU PRINCIPAL ==================== -->
-    <center>
-        <VBox spacing="30" alignment="CENTER" styleClass="main-card">
-            <padding>
-                <Insets top="35" right="50" bottom="40" left="50"/>
-            </padding>
-
-            <!-- ==================== FORMULAIRE ==================== -->
-            <VBox spacing="20" styleClass="form-section">
-                <Label text="Informations du patient" styleClass="section-title"/>
-
-                <GridPane hgap="20" vgap="16" styleClass="form-grid">
-                    <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" minWidth="140"/>
-                        <ColumnConstraints hgrow="ALWAYS"/>
-                    </columnConstraints>
-
-                    <!-- Ligne 1 -->
-                    <Label text="Nom :"                GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="field-label"/>
-                    <TextField fx:id="txtNom"          GridPane.rowIndex="0" GridPane.columnIndex="1"
-                               promptText="Nom de famille" styleClass="text-field"/>
-
-                    <!-- Ligne 2 -->
-                    <Label text="Prénom :"             GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="field-label"/>
-                    <TextField fx:id="txtPrenom"       GridPane.rowIndex="1" GridPane.columnIndex="1"
-                               promptText="Prénom" styleClass="text-field"/>
-
-                    <!-- Ligne 3 -->
-                    <Label text="Date de naissance :"   GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="field-label"/>
-                    <DatePicker fx:id="dpDateNaissance" GridPane.rowIndex="2" GridPane.columnIndex="1"
-                                styleClass="date-picker"/>
-
-                    <!-- Ligne 4 -->
-                    <Label text="Adresse :"            GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="field-label"/>
-                    <TextField fx:id="txtAdresse"      GridPane.rowIndex="3" GridPane.columnIndex="1"
-                               promptText="Rue, code postal, ville" styleClass="text-field"/>
-
-                    <!-- Ligne 5 -->
-                    <Label text="Téléphone :"          GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="field-label"/>
-                    <TextField fx:id="txtTelephone"    GridPane.rowIndex="4" GridPane.columnIndex="1"
-                               promptText="Ex: 99 123 456" styleClass="text-field"/>
-                </GridPane>
-
-                <!-- ==================== BOUTONS D'ACTION ==================== -->
-                <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="button-bar">
-                    <Button text="Ajouter"      onAction="#onAjouter"   styleClass="btn-primary btn-large"/>
-                    <Button text="Modifier"     onAction="#onModifier"  styleClass="btn-success btn-large"/>
-                    <Button text="Supprimer"    onAction="#onSupprimer" styleClass="btn-danger btn-large"/>
-                    <Button text="Vider"        onAction="#onClear"     styleClass="btn-secondary btn-large"/>
-                </HBox>
-            </VBox>
-
-            <!-- ==================== TABLEAU DES PATIENTS ==================== -->
-            <VBox spacing="12" styleClass="table-section">
-                <Label text="Liste des patients enregistrés" styleClass="section-title"/>
-                <TableView fx:id="tablePatients" prefHeight="420" styleClass="modern-table">
-                    <columns>
-                        <TableColumn fx:id="colId"             text="ID"         prefWidth="70"/>
-                        <TableColumn fx:id="colNom"            text="Nom"        prefWidth="150"/>
-                        <TableColumn fx:id="colPrenom"         text="Prénom"     prefWidth="150"/>
-                        <TableColumn fx:id="colDateNaissance"  text="Naissance"  prefWidth="130"/>
-                        <TableColumn fx:id="colTelephone"      text="Téléphone"  prefWidth="140"/>
-                    </columns>
-                </TableView>
-            </VBox>
-        </VBox>
-    </center>
 </BorderPane>
-

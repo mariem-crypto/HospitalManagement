@@ -38,6 +38,9 @@ public class PatientController {
 
     @FXML
     private TableColumn<Patient, String> colPrenom;
+    
+    @FXML
+    private TableColumn<Patient, String> colAdresse;
 
     @FXML
     private TableColumn<Patient, LocalDate> colDateNaissance;
@@ -61,7 +64,8 @@ public class PatientController {
                 new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getDateNaissance()));
         colTelephone.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
-
+        colAdresse.setCellValueFactory(data ->
+        new javafx.beans.property.SimpleStringProperty(data.getValue().getAdresse()));
         // Charger les données
         rafraichirTable();
 

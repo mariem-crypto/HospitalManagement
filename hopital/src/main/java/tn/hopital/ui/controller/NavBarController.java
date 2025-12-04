@@ -29,6 +29,10 @@ public class NavBarController {
     @FXML
     private Button btnLogout;
 
+    // 👉 Nouveau : bouton ChatBot
+    @FXML
+    private Button btnChatBot;
+
     // ===== Utilitaire : récupérer la fenêtre courante =====
     private Stage getStage() {
         if (btnPatients != null && btnPatients.getScene() != null) {
@@ -83,6 +87,9 @@ public class NavBarController {
         if (btnRdv != null) {
             btnRdv.getStyleClass().remove("nav-btn-active");
         }
+        if (btnChatBot != null) {
+            btnChatBot.getStyleClass().remove("nav-btn-active");
+        }
 
         // Puis on l'ajoute au bouton actuel
         if (activeButton != null && !activeButton.getStyleClass().contains("nav-btn-active")) {
@@ -121,6 +128,14 @@ public class NavBarController {
                 btnRdv);
     }
 
+    // 👉 Nouveau : handler pour le bouton ChatBot
+    @FXML
+    private void onChatBot() {
+        navigateTo("/tn/hopital/ui/view/ChatBotView.fxml",
+                "Assistant IA - ChatBot",
+                btnChatBot);
+    }
+
     @FXML
     private void onLogout() {
         try {
@@ -151,3 +166,4 @@ public class NavBarController {
         }
     }
 }
+

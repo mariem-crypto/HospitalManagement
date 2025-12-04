@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tn.hopital.ui.controller.ChatBotController"
+            stylesheets="@../css/chatbot.css">
+
+    <!-- En-tête -->
+    <top>
+        <Label text="Assistant IA - ChatBot 🤖"
+               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 15;"/>
+    </top>
+
+    <!-- Zone de conversation -->
+    <center>
+        <TextArea fx:id="txtConversation"
+                  editable="false"
+                  wrapText="true"
+                  prefRowCount="15"
+                  style="-fx-font-size: 14px; -fx-padding: 10;"/>
+    </center>
+
+    <!-- Zone de saisie -->
+    <bottom>
+        <HBox spacing="10">
+            <!-- ✅ CORRECT : padding avec <Insets> -->
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <TextField fx:id="txtQuestion"
+                       promptText="Écrivez votre question ici..."
+                       HBox.hgrow="ALWAYS"/>
+
+            <Button text="Envoyer"
+                    onAction="#onSend"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
+
