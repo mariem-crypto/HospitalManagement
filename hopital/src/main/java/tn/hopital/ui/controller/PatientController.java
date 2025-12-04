@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import tn.hopital.model.Patient;
 import tn.hopital.service.HopitalService;
+import tn.hopital.ui.util.AlertUtil;   // ✅ IMPORTANT
 
 import java.time.LocalDate;
 
@@ -50,11 +51,16 @@ public class PatientController {
     @FXML
     private void initialize() {
         // Configuration des colonnes
-        colId.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId()).asObject());
-        colNom.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getNom()));
-        colPrenom.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getPrenom()));
-        colDateNaissance.setCellValueFactory(data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getDateNaissance()));
-        colTelephone.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
+        colId.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId()).asObject());
+        colNom.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getNom()));
+        colPrenom.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getPrenom()));
+        colDateNaissance.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getDateNaissance()));
+        colTelephone.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
 
         // Charger les données
         rafraichirTable();
@@ -94,12 +100,12 @@ public class PatientController {
 
             rafraichirTable();
             clearForm();
-            showInfo("Succès", "Patient ajouté avec succès.");
+            AlertUtil.showInfo("Succès", "Patient ajouté avec succès.");
         } catch (IllegalArgumentException e) {
-            showError("Données invalides", e.getMessage());
+            AlertUtil.showError("Données invalides", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Erreur", "Erreur lors de l'ajout du patient.");
+            AlertUtil.showError("Erreur", "Erreur lors de l'ajout du patient.");
         }
     }
 
@@ -107,7 +113,7 @@ public class PatientController {
     private void onModifier() {
         Patient selection = tablePatients.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            showWarning("Aucune sélection", "Veuillez sélectionner un patient dans la table.");
+            AlertUtil.showWarning("Aucune sélection", "Veuillez sélectionner un patient dans la table.");
             return;
         }
 
@@ -120,10 +126,10 @@ public class PatientController {
 
             service.modifierPatient(selection);
             rafraichirTable();
-            showInfo("Succès", "Patient modifié avec succès.");
+            AlertUtil.showInfo("Succès", "Patient modifié avec succès.");
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Erreur", "Erreur lors de la modification du patient.");
+            AlertUtil.showError("Erreur", "Erreur lors de la modification du patient.");
         }
     }
 
@@ -131,25 +137,24 @@ public class PatientController {
     private void onSupprimer() {
         Patient selection = tablePatients.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            showWarning("Aucune sélection", "Veuillez sélectionner un patient à supprimer.");
+            AlertUtil.showWarning("Aucune sélection", "Veuillez sélectionner un patient à supprimer.");
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirmation");
-        confirm.setHeaderText("Suppression du patient");
-        confirm.setContentText("Voulez-vous vraiment supprimer ce patient ?");
-        var result = confirm.showAndWait();
+        boolean ok = AlertUtil.confirm(
+                "Confirmation",
+                "Voulez-vous vraiment supprimer ce patient ?"
+        );
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (ok) {
             try {
                 service.supprimerPatient(selection.getId());
                 rafraichirTable();
                 clearForm();
-                showInfo("Succès", "Patient supprimé.");
+                AlertUtil.showInfo("Succès", "Patient supprimé.");
             } catch (Exception e) {
                 e.printStackTrace();
-                showError("Erreur", "Erreur lors de la suppression du patient.");
+                AlertUtil.showError("Erreur", "Erreur lors de la suppression du patient.");
             }
         }
     }
@@ -166,31 +171,5 @@ public class PatientController {
         dpDateNaissance.setValue(null);
         txtAdresse.clear();
         txtTelephone.clear();
-    }
-
-    /* ==== Petites méthodes pour afficher des alertes ==== */
-
-    private void showInfo(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showWarning(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Attention");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

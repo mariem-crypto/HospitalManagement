@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import tn.hopital.model.Medecin;
 import tn.hopital.model.Specialite;
 import tn.hopital.service.HopitalService;
+import tn.hopital.ui.util.AlertUtil;   // ✅ important
 
 public class MedecinController {
 
@@ -110,12 +111,12 @@ public class MedecinController {
 
             rafraichirTable();
             clearForm();
-            showInfo("Succès", "Médecin ajouté avec succès.");
+            AlertUtil.showInfo("Succès", "Médecin ajouté avec succès.");
         } catch (IllegalArgumentException e) {
-            showError("Données invalides", e.getMessage());
+            AlertUtil.showError("Données invalides", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Erreur", "Erreur lors de l'ajout du médecin.");
+            AlertUtil.showError("Erreur", "Erreur lors de l'ajout du médecin.");
         }
     }
 
@@ -123,7 +124,7 @@ public class MedecinController {
     private void onModifier() {
         Medecin selection = tableMedecins.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            showWarning("Aucune sélection", "Veuillez sélectionner un médecin dans la table.");
+            AlertUtil.showWarning("Aucune sélection", "Veuillez sélectionner un médecin dans la table.");
             return;
         }
 
@@ -135,10 +136,10 @@ public class MedecinController {
 
             service.modifierMedecin(selection);
             rafraichirTable();
-            showInfo("Succès", "Médecin modifié avec succès.");
+            AlertUtil.showInfo("Succès", "Médecin modifié avec succès.");
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Erreur", "Erreur lors de la modification du médecin.");
+            AlertUtil.showError("Erreur", "Erreur lors de la modification du médecin.");
         }
     }
 
@@ -146,25 +147,24 @@ public class MedecinController {
     private void onSupprimer() {
         Medecin selection = tableMedecins.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            showWarning("Aucune sélection", "Veuillez sélectionner un médecin à supprimer.");
+            AlertUtil.showWarning("Aucune sélection", "Veuillez sélectionner un médecin à supprimer.");
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirmation");
-        confirm.setHeaderText("Suppression du médecin");
-        confirm.setContentText("Voulez-vous vraiment supprimer ce médecin ?");
-        var result = confirm.showAndWait();
+        boolean ok = AlertUtil.confirm(
+                "Confirmation",
+                "Voulez-vous vraiment supprimer ce médecin ?"
+        );
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (ok) {
             try {
                 service.supprimerMedecin(selection.getId());
                 rafraichirTable();
                 clearForm();
-                showInfo("Succès", "Médecin supprimé.");
+                AlertUtil.showInfo("Succès", "Médecin supprimé.");
             } catch (Exception e) {
                 e.printStackTrace();
-                showError("Erreur", "Erreur lors de la suppression du médecin.");
+                AlertUtil.showError("Erreur", "Erreur lors de la suppression du médecin.");
             }
         }
     }
@@ -181,30 +181,5 @@ public class MedecinController {
         cbSpecialite.getSelectionModel().clearSelection();
         txtTelephone.clear();
     }
-
-    /* ==== Méthodes utilitaires pour les alertes ==== */
-
-    private void showInfo(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showWarning(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Attention");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }
+

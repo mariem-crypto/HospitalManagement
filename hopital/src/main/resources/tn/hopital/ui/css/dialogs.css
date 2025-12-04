@@ -1,0 +1,50 @@
+.custom-alert {
+    -fx-font-family: "Segoe UI", "Sans Serif";
+    -fx-font-size: 13px;
+}
+
+/* Bandeau du haut (header) */
+.custom-alert > *.header-panel {
+    -fx-background-color: linear-gradient(to right, #1976d2, #42a5f5);
+    -fx-padding: 10;
+}
+
+/* Titre dans le header */
+.custom-alert > *.header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* Contenu du texte */
+.custom-alert .content {
+    -fx-padding: 10 10 15 10;
+}
+
+/* Label de contenu */
+.custom-alert .content .label {
+    -fx-text-fill: #333333;
+}
+
+/* Boutons OK / Annuler */
+.custom-alert .button-bar .button {
+    -fx-background-radius: 20;
+    -fx-padding: 6 14 6 14;
+    -fx-font-weight: bold;
+}
+
+.custom-alert .button-bar .button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.25), 5, 0, 0, 0);
+}
+
+/* Bouton par défaut (OK) */
+.custom-alert .button-bar .button:default {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+}
+
+/* Autres boutons */
+.custom-alert .button-bar .button:not(:default) {
+    -fx-background-color: #eeeeee;
+    -fx-text-fill: #333333;
+}

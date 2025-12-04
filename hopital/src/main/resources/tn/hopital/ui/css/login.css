@@ -1,6 +1,6 @@
 /* Fond avec image + dégradé sombre pour lisibilité */
 .login-background {
-    -fx-background-image: url('../img/log.jpg');          /* Chemin vers ton image */
+    -fx-background-image: url('../img/logg.png');          /* Chemin vers ton image */
     -fx-background-size: cover;                                     /* Remplit tout l'écran */
     -fx-background-position: center center;
     

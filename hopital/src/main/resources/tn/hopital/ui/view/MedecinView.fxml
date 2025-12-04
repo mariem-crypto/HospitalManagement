@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<?import javafx.fxml.FXMLLoader?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -13,10 +14,19 @@
 
     <!-- ==================== BARRE DU HAUT ==================== -->
     <top>
-        <VBox styleClass="top-bar">
-            <Label text="Gestion des Médecins"
-                   styleClass="page-title"/>
-            <Separator styleClass="separator"/>
+        <!-- NavBar + titre de la page -->
+        <VBox>
+
+            <!-- 🔹 Barre de navigation commune -->
+            <fx:include source="../components/NavBar.fxml"/>
+
+            <!-- 🔹 Bandeau titre spécifique Médecins -->
+            <VBox styleClass="top-bar">
+                <Label text="Gestion des Médecins"
+                       styleClass="page-title"/>
+                <Separator styleClass="separator"/>
+            </VBox>
+
         </VBox>
     </top>
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="tn.hopital.ui.controller.NavBarController"
+      styleClass="navbar"
+      spacing="20">
+
+    <padding>
+        <Insets top="8" right="20" bottom="8" left="20"/>
+    </padding>
+
+    <!-- Logo / Titre à gauche -->
+    <Label text="🏥 Gestion d'hôpital"
+           styleClass="nav-title"/>
+
+    <!-- Espace flexible au milieu -->
+    <Region HBox.hgrow="ALWAYS"/>
+
+    <!-- Boutons à droite -->
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+
+        <Button fx:id="btnPatients"
+                text="Patients"
+                onAction="#onPatients"
+                styleClass="nav-btn"/>
+
+        <Button fx:id="btnMedecins"
+                text="Médecins"
+                onAction="#onMedecins"
+                styleClass="nav-btn"/>
+
+        <Button fx:id="btnRdv"
+                text="Rendez-vous"
+                onAction="#onRdv"
+                styleClass="nav-btn"/>
+
+        <Button fx:id="btnLogout"
+                text="Déconnexion"
+                onAction="#onLogout"
+                styleClass="nav-btn logout-btn"/>
+    </HBox>
+
+</HBox>
+

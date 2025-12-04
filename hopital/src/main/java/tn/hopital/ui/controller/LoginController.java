@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import tn.hopital.model.Admin;
 import tn.hopital.service.HopitalService;
+import tn.hopital.ui.util.AlertUtil;  
 
 public class LoginController {
 
@@ -28,8 +29,16 @@ public class LoginController {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
+        // petite validation côté UI
+        if (username == null || username.isBlank() ||
+            password == null || password.isBlank()) {
+
+            lblMessage.setText("Veuillez saisir le nom d'utilisateur et le mot de passe.");
+            // ou AlertUtil.showWarning("Champs manquants", "Veuillez remplir les deux champs.");
+            return;
+        }
+
         try {
-            // Appel de la couche métier : vérifie dans la base avec BCrypt
             Admin admin = service.login(username, password);
 
             // Si on arrive ici : login OK
@@ -53,9 +62,11 @@ public class LoginController {
         } catch (IllegalArgumentException e) {
             // Cas fonctionnel : mauvais login / mot de passe
             lblMessage.setText(e.getMessage());
+            txtPassword.clear();
         } catch (Exception e) {
             e.printStackTrace();
             lblMessage.setText("Erreur interne lors de la connexion.");
+            // Option : AlertUtil.showError("Erreur", "Erreur interne lors de la connexion.");
         }
     }
 }

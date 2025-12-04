@@ -8,10 +8,12 @@ import tn.hopital.model.Medecin;
 import tn.hopital.model.Patient;
 import tn.hopital.model.RendezVous;
 import tn.hopital.service.HopitalService;
+import tn.hopital.ui.util.AlertUtil;   
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class RendezVousController {
@@ -46,6 +48,10 @@ public class RendezVousController {
     private final HopitalService service = new HopitalService();
     private final ObservableList<RendezVous> rdvList = FXCollections.observableArrayList();
 
+    // Pour afficher une jolie date/heure dans la table
+    private static final DateTimeFormatter DATE_HEURE_FORMATTER =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
     @FXML
     private void initialize() {
         // Charger patients & médecins dans les ComboBox
@@ -62,18 +68,18 @@ public class RendezVousController {
         colPatient.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
                         data.getValue().getPatient().getNom() + " " +
-                        data.getValue().getPatient().getPrenom()
+                                data.getValue().getPatient().getPrenom()
                 ));
 
         colMedecin.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
                         data.getValue().getMedecin().getNom() + " " +
-                        data.getValue().getMedecin().getPrenom()
+                                data.getValue().getMedecin().getPrenom()
                 ));
 
         colDateHeure.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
-                        data.getValue().getDateRdv().toString()
+                        data.getValue().getDateRdv().format(DATE_HEURE_FORMATTER)
                 ));
 
         // Charger les RDV existants
@@ -96,7 +102,7 @@ public class RendezVousController {
             cbMedecin.setValue(rdv.getMedecin());
             LocalDateTime dt = rdv.getDateRdv();
             dpDate.setValue(dt.toLocalDate());
-            txtHeure.setText(dt.toLocalTime().toString()); // format HH:mm:ss mais ça va
+            txtHeure.setText(dt.toLocalTime().toString()); // HH:mm:ss mais c’est ok
         }
     }
 
@@ -123,7 +129,8 @@ public class RendezVousController {
 
             LocalTime heure;
             try {
-                heure = LocalTime.parse(heureStr); // format HH:mm ou HH:mm:ss
+                // Accepte HH:mm ou HH:mm:ss
+                heure = LocalTime.parse(heureStr);
             } catch (DateTimeParseException e) {
                 throw new IllegalArgumentException("Format d'heure invalide. Utilisez HH:mm (ex: 09:15).");
             }
@@ -133,13 +140,13 @@ public class RendezVousController {
             service.planifierRendezVous(patient, medecin, dateRdv);
             rafraichirTable();
             clearForm();
-            showInfo("Succès", "Rendez-vous ajouté avec succès.");
+            AlertUtil.showInfo("Succès", "Rendez-vous ajouté avec succès.");
 
         } catch (IllegalArgumentException e) {
-            showError("Données invalides", e.getMessage());
+            AlertUtil.showError("Données invalides", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Erreur", "Erreur lors de l'ajout du rendez-vous.");
+            AlertUtil.showError("Erreur", "Erreur lors de l'ajout du rendez-vous.");
         }
     }
 
@@ -147,25 +154,24 @@ public class RendezVousController {
     private void onSupprimer() {
         RendezVous selection = tableRdv.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            showWarning("Aucune sélection", "Veuillez sélectionner un rendez-vous à supprimer.");
+            AlertUtil.showWarning("Aucune sélection", "Veuillez sélectionner un rendez-vous à supprimer.");
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Confirmation");
-        confirm.setHeaderText("Suppression du rendez-vous");
-        confirm.setContentText("Voulez-vous vraiment supprimer ce rendez-vous ?");
-        var result = confirm.showAndWait();
+        boolean ok = AlertUtil.confirm(
+                "Confirmation",
+                "Voulez-vous vraiment supprimer ce rendez-vous ?"
+        );
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (ok) {
             try {
                 service.supprimerRendezVous(selection.getId());
                 rafraichirTable();
                 clearForm();
-                showInfo("Succès", "Rendez-vous supprimé.");
+                AlertUtil.showInfo("Succès", "Rendez-vous supprimé.");
             } catch (Exception e) {
                 e.printStackTrace();
-                showError("Erreur", "Erreur lors de la suppression du rendez-vous.");
+                AlertUtil.showError("Erreur", "Erreur lors de la suppression du rendez-vous.");
             }
         }
     }
@@ -181,31 +187,5 @@ public class RendezVousController {
         cbMedecin.getSelectionModel().clearSelection();
         dpDate.setValue(null);
         txtHeure.clear();
-    }
-
-    /* ==== Méthodes utilitaires pour les alertes ==== */
-
-    private void showInfo(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showWarning(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Attention");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(title);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }
