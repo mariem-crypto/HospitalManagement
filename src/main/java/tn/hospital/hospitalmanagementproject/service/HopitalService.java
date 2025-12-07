@@ -221,22 +221,57 @@ public class HopitalService {
     private void sendEmails(RendezVous rdv) {
         String date = rdv.getDateRdv().toString();
 
-        // Patient email
+        // ============================
+        // EMAIL POUR LE PATIENT
+        // ============================
+        String messagePatient =
+                "----------------------------------------\n" +
+                        "     CONFIRMATION DE RENDEZ-VOUS\n" +
+                        "----------------------------------------\n\n" +
+                        "Bonjour " + rdv.getPatient().getPrenom() + " " + rdv.getPatient().getNom() + ",\n\n" +
+                        "Votre rendez-vous a été confirmé avec succès.\n\n" +
+                        "📅 *Détails du rendez-vous*\n" +
+                        " - Date et heure : " + date + "\n" +
+                        " - Médecin : Dr. " + rdv.getMedecin().getNom() + " " + rdv.getMedecin().getPrenom() + "\n" +
+                        " - Spécialité : " + rdv.getMedecin().getSpecialite() + "\n\n" +
+                        "Merci de vous présenter 10 minutes avant l'heure prévue.\n\n" +
+                        "Pour toute modification ou annulation, veuillez contacter le service d'accueil.\n\n" +
+                        "Cordialement,\n" +
+                        "🧑‍⚕ Hôpital - Service des Rendez-Vous\n";
+
+
         EmailSender.sendEmail(
                 rdv.getPatient().getEmail(),
-                "Confirmation de votre rendez-vous",
-                "Bonjour " + rdv.getPatient().getNom() +
-                        ",\nVotre rendez-vous est confirmé pour le " + date +
-                        ".\nMerci."
+                "Votre rendez-vous est confirmé",
+                messagePatient
         );
 
-        // Médecin email
+
+        // ============================
+        // EMAIL POUR LE MÉDECIN
+        // ============================
+        String messageMedecin =
+                "----------------------------------------\n" +
+                        "     NOUVEAU RENDEZ-VOUS PROGRAMMÉ\n" +
+                        "----------------------------------------\n\n" +
+                        "Bonjour Dr. " + rdv.getMedecin().getNom() + ",\n\n" +
+                        "Un nouveau rendez-vous a été ajouté à votre planning.\n\n" +
+                        "👤 *Patient*\n" +
+                        " - Nom : " + rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom() + "\n" +
+                        " - Téléphone : " + rdv.getPatient().getTelephone() + "\n\n" +
+                        "📅 *Détails du rendez-vous*\n" +
+                        " - Date et heure : " + date + "\n" +
+                        " - Spécialité concernée : " + rdv.getMedecin().getSpecialite() + "\n\n" +
+                        "Veuillez vérifier votre planning dans le système.\n\n" +
+                        "Cordialement,\n" +
+                        "🧑‍⚕ Système de Gestion des Rendez-Vous\n";
+
+
         EmailSender.sendEmail(
                 rdv.getMedecin().getEmail(),
-                "Nouveau rendez-vous programmé",
-                "Bonjour Dr. " + rdv.getMedecin().getNom() +
-                        ",\nUn nouveau rendez-vous est fixé avec le patient " +
-                        rdv.getPatient().getNom() + " pour le " + date + "."
+                "Nouveau rendez-vous dans votre planning",
+                messageMedecin
         );
     }
+
 }
