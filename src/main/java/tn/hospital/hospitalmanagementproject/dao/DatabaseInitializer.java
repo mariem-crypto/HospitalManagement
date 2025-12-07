@@ -32,7 +32,8 @@ public class DatabaseInitializer {
                 prenom VARCHAR(100) NOT NULL,
                 date_naissance DATE,
                 adresse VARCHAR(255),
-                telephone VARCHAR(20)
+                telephone VARCHAR(20),
+                email VARCHAR(100) NOT NULL
             );
             """;
 
@@ -42,7 +43,8 @@ public class DatabaseInitializer {
                 nom VARCHAR(100) NOT NULL,
                 prenom VARCHAR(100) NOT NULL,
                 specialite VARCHAR(100) NOT NULL,
-                telephone VARCHAR(20)
+                telephone VARCHAR(20),
+                email VARCHAR(100) NOT NULL
             );
             """;
 

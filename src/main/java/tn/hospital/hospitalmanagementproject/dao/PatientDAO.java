@@ -22,7 +22,7 @@ public class PatientDAO {
      * @throws SQLException if a database access error occurs
      */
     public void save(Patient p) throws SQLException {
-        String sql = "INSERT INTO patient(nom, prenom, date_naissance, adresse, telephone) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO patient(nom, prenom, date_naissance, adresse, telephone,email) VALUES (?,?,?,?,?,?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -32,6 +32,7 @@ public class PatientDAO {
             ps.setDate(3, p.getDateNaissance() != null ? Date.valueOf(p.getDateNaissance()) : null);
             ps.setString(4, p.getAdresse());
             ps.setString(5, p.getTelephone());
+            ps.setString(6, p.getEmail());
 
             ps.executeUpdate();
 
@@ -73,7 +74,6 @@ public class PatientDAO {
      */
     public Patient findById(int id) throws SQLException {
         String sql = "SELECT * FROM patient WHERE id = ?";
-
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -94,7 +94,7 @@ public class PatientDAO {
      * @throws SQLException if a database access error occurs
      */
     public void update(Patient p) throws SQLException {
-        String sql = "UPDATE patient SET nom=?, prenom=?, date_naissance=?, adresse=?, telephone=? WHERE id=?";
+        String sql = "UPDATE patient SET nom=?, prenom=?, date_naissance=?, adresse=?, telephone=?,email=? WHERE id=?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -105,6 +105,7 @@ public class PatientDAO {
             ps.setString(4, p.getAdresse());
             ps.setString(5, p.getTelephone());
             ps.setInt(6, p.getId());
+            ps.setString(7, p.getEmail());
 
             ps.executeUpdate();
         }
@@ -118,10 +119,8 @@ public class PatientDAO {
      */
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM patient WHERE id=?";
-
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -141,7 +140,8 @@ public class PatientDAO {
                 rs.getString("prenom"),
                 rs.getDate("date_naissance") != null ? rs.getDate("date_naissance").toLocalDate() : null,
                 rs.getString("adresse"),
-                rs.getString("telephone")
+                rs.getString("telephone"),
+                rs.getString("email")
         );
     }
 }

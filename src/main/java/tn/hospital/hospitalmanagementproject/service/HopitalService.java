@@ -192,12 +192,12 @@ public class HopitalService {
         if (medecin == null || medecin.getId() <= 0) {
             throw new IllegalArgumentException("Médecin invalide pour le rendez-vous");
         }
-        if (dateRdv.isAfter(LocalDateTime.now())) {
+        if (dateRdv.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("On ne peut pas planifier un rendez-vous dans le passé");
         }
 
         RendezVous rdv = new RendezVous(patient, medecin, dateRdv);
-
+        sendEmails(rdv);
         try {
             rendezVousDAO.save(rdv);
         } catch (SQLException e) {
@@ -216,5 +216,27 @@ public class HopitalService {
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de la suppression du rendez-vous", e);
         }
+    }
+
+    private void sendEmails(RendezVous rdv) {
+        String date = rdv.getDateRdv().toString();
+
+        // Patient email
+        EmailSender.sendEmail(
+                rdv.getPatient().getEmail(),
+                "Confirmation de votre rendez-vous",
+                "Bonjour " + rdv.getPatient().getNom() +
+                        ",\nVotre rendez-vous est confirmé pour le " + date +
+                        ".\nMerci."
+        );
+
+        // Médecin email
+        EmailSender.sendEmail(
+                rdv.getMedecin().getEmail(),
+                "Nouveau rendez-vous programmé",
+                "Bonjour Dr. " + rdv.getMedecin().getNom() +
+                        ",\nUn nouveau rendez-vous est fixé avec le patient " +
+                        rdv.getPatient().getNom() + " pour le " + date + "."
+        );
     }
 }

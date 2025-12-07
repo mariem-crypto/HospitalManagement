@@ -10,6 +10,7 @@ public class Medecin {
     private String prenom;
     private String specialite;
     private String telephone;
+    private String email;
 
     /**
      * Constructeur par défaut.
@@ -25,11 +26,12 @@ public class Medecin {
      * @param specialite la spécialité du médecin
      * @param telephone  le numéro de téléphone du médecin
      */
-    public Medecin(String nom, String prenom, String specialite, String telephone) {
+    public Medecin(String nom, String prenom, String specialite, String telephone,String email) {
         this.nom = nom;
         this.prenom = prenom;
         this.specialite = specialite;
         this.telephone = telephone;
+        this.email = email;
     }
 
     /**
@@ -41,12 +43,13 @@ public class Medecin {
      * @param specialite la spécialité du médecin
      * @param telephone  le numéro de téléphone du médecin
      */
-    public Medecin(int id, String nom, String prenom, String specialite, String telephone) {
+    public Medecin(int id, String nom, String prenom, String specialite, String telephone,String email) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.specialite = specialite;
         this.telephone = telephone;
+        this.email = email;
     }
 
     // -------------------- Getters / Setters --------------------
@@ -126,11 +129,14 @@ public class Medecin {
         this.telephone = telephone;
     }
 
-    /**
-     * Retourne une représentation textuelle du médecin.
-     *
-     * @return nom + prénom + spécialité
-     */
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return nom + " " + prenom + " (" + specialite + ")";

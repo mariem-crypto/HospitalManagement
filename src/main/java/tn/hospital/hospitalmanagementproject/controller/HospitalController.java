@@ -29,49 +29,90 @@ public class HospitalController {
     private final HopitalService service = new HopitalService();
 
     // -------------------- PATIENTS --------------------
-    @FXML private TableView<Patient> tablePatients;
-    @FXML private TableColumn<Patient, Integer> colPatientId;
-    @FXML private TableColumn<Patient, String> colPatientNom;
-    @FXML private TableColumn<Patient, String> colPatientPrenom;
-    @FXML private TableColumn<Patient, LocalDate> colPatientDateNaissance;
-    @FXML private TableColumn<Patient, String> colPatientAdresse;
-    @FXML private TableColumn<Patient, String> colPatientTelephone;
+    @FXML
+    private TableView<Patient> tablePatients;
+    @FXML
+    private TableColumn<Patient, Integer> colPatientId;
+    @FXML
+    private TableColumn<Patient, String> colPatientNom;
+    @FXML
+    private TableColumn<Patient, String> colPatientPrenom;
+    @FXML
+    private TableColumn<Patient, LocalDate> colPatientDateNaissance;
+    @FXML
+    private TableColumn<Patient, String> colPatientAdresse;
+    @FXML
+    private TableColumn<Patient, String> colPatientTelephone;
+    @FXML
+    private TableColumn<Patient, String> colPatientEmail;
 
-    @FXML private TextField txtPatientNom;
-    @FXML private TextField txtPatientPrenom;
-    @FXML private DatePicker dpPatientDateNaissance;
-    @FXML private TextField txtPatientAdresse;
-    @FXML private TextField txtPatientTelephone;
+    @FXML
+    private TextField txtPatientNom;
+    @FXML
+    private TextField txtPatientPrenom;
+    @FXML
+    private DatePicker dpPatientDateNaissance;
+    @FXML
+    private TextField txtPatientAdresse;
+    @FXML
+    private TextField txtPatientTelephone;
+    @FXML
+    private TextField txtPatientEmail;
 
     private ObservableList<Patient> patientList;
 
     // -------------------- MEDECINS --------------------
-    @FXML private TableView<Medecin> tableMedecins;
-    @FXML private TableColumn<Medecin, Integer> colMedId;
-    @FXML private TableColumn<Medecin, String> colMedNom;
-    @FXML private TableColumn<Medecin, String> colMedPrenom;
-    @FXML private TableColumn<Medecin, String> colMedSpecialite;
-    @FXML private TableColumn<Medecin, String> colMedTelephone;
+    @FXML
+    private TableView<Medecin> tableMedecins;
+    @FXML
+    private TableColumn<Medecin, Integer> colMedId;
+    @FXML
+    private TableColumn<Medecin, String> colMedNom;
+    @FXML
+    private TableColumn<Medecin, String> colMedPrenom;
+    @FXML
+    private TableColumn<Medecin, String> colMedSpecialite;
+    @FXML
+    private TableColumn<Medecin, String> colMedTelephone;
+    @FXML
+    private TableColumn<Medecin, String> colMedEmail;
 
-    @FXML private TextField txtMedNom;
-    @FXML private TextField txtMedPrenom;
-    @FXML private TextField txtMedSpecialite;
-    @FXML private TextField txtMedTelephone;
+    @FXML
+    private TextField txtMedNom;
+    @FXML
+    private TextField txtMedPrenom;
+    @FXML
+    private TextField txtMedSpecialite;
+    @FXML
+    private TextField txtMedTelephone;
+
+    @FXML
+    private TextField txtMedEmail;
 
     private ObservableList<Medecin> medecinList;
 
     // -------------------- RENDEZ-VOUS --------------------
-    @FXML private TableView<RendezVous> tableRdv;
-    @FXML private TableColumn<RendezVous, Integer> colRdvId;
-    @FXML private TableColumn<RendezVous, String> colRdvPatient;
-    @FXML private TableColumn<RendezVous, String> colRdvMedecin;
-    @FXML private TableColumn<RendezVous, LocalDateTime> colRdvDate;
+    @FXML
+    private TableView<RendezVous> tableRdv;
+    @FXML
+    private TableColumn<RendezVous, Integer> colRdvId;
+    @FXML
+    private TableColumn<RendezVous, String> colRdvPatient;
+    @FXML
+    private TableColumn<RendezVous, String> colRdvMedecin;
+    @FXML
+    private TableColumn<RendezVous, LocalDateTime> colRdvDate;
 
-    @FXML private ComboBox<Patient> cbRdvPatient;
-    @FXML private ComboBox<Medecin> cbRdvMedecin;
-    @FXML private DatePicker dpRdvDate;
-    @FXML private Spinner<Integer> spRdvHour;
-    @FXML private Spinner<Integer> spRdvMinute;
+    @FXML
+    private ComboBox<Patient> cbRdvPatient;
+    @FXML
+    private ComboBox<Medecin> cbRdvMedecin;
+    @FXML
+    private DatePicker dpRdvDate;
+    @FXML
+    private Spinner<Integer> spRdvHour;
+    @FXML
+    private Spinner<Integer> spRdvMinute;
 
     private ObservableList<RendezVous> rdvList;
 
@@ -152,7 +193,7 @@ public class HospitalController {
     @FXML
     private void ajouterPatient() {
         Patient p = new Patient(txtPatientNom.getText(), txtPatientPrenom.getText(),
-                dpPatientDateNaissance.getValue(), txtPatientAdresse.getText(), txtPatientTelephone.getText());
+                dpPatientDateNaissance.getValue(), txtPatientAdresse.getText(), txtPatientTelephone.getText(),txtPatientEmail.getText());
         service.ajouterPatient(p);
         patientList.add(p);
         clearPatientForm();
@@ -217,6 +258,7 @@ public class HospitalController {
         colMedPrenom.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getPrenom()));
         colMedSpecialite.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getSpecialite()));
         colMedTelephone.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
+        colMedEmail.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getEmail()));
 
         cbRdvMedecin.setItems(medecinList);
     }
@@ -226,7 +268,7 @@ public class HospitalController {
      */
     @FXML
     private void ajouterMedecin() {
-        Medecin m = new Medecin(txtMedNom.getText(), txtMedPrenom.getText(), txtMedSpecialite.getText(), txtMedTelephone.getText());
+        Medecin m = new Medecin(txtMedNom.getText(), txtMedPrenom.getText(), txtMedSpecialite.getText(), txtMedTelephone.getText(),txtMedEmail.getText());
         service.ajouterMedecin(m);
         medecinList.add(m);
         clearMedForm();

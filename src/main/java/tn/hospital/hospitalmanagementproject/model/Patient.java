@@ -13,6 +13,7 @@ public class Patient {
     private LocalDate dateNaissance;
     private String adresse;
     private String telephone;
+    private String email;
 
     /**
      * Constructeur par défaut.
@@ -31,12 +32,13 @@ public class Patient {
      * @param telephone     le numéro de téléphone
      */
     public Patient(String nom, String prenom, LocalDate dateNaissance,
-                   String adresse, String telephone) {
+                   String adresse, String telephone,String email) {
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.adresse = adresse;
         this.telephone = telephone;
+        this.email = email;
     }
 
     /**
@@ -50,13 +52,14 @@ public class Patient {
      * @param telephone     le numéro de téléphone
      */
     public Patient(int id, String nom, String prenom, LocalDate dateNaissance,
-                   String adresse, String telephone) {
+                   String adresse, String telephone,String email) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.adresse = adresse;
         this.telephone = telephone;
+        this.email = email;
     }
 
     // -------------------- Getters / Setters --------------------
@@ -157,11 +160,14 @@ public class Patient {
         this.telephone = telephone;
     }
 
-    /**
-     * Retourne une représentation textuelle du patient (nom + prénom).
-     *
-     * @return nom et prénom
-     */
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return nom + " " + prenom;

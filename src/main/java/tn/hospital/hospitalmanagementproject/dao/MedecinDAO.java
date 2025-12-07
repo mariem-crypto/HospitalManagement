@@ -49,6 +49,7 @@ public class MedecinDAO {
      */
     public List<Medecin> findAll() throws SQLException {
         List<Medecin> list = new ArrayList<>();
+
         String sql = "SELECT * FROM medecin ORDER BY nom";
 
         try (Connection conn = DBConnection.getConnection();
@@ -92,7 +93,7 @@ public class MedecinDAO {
      * @throws SQLException if a database access error occurs
      */
     public void update(Medecin m) throws SQLException {
-        String sql = "UPDATE medecin SET nom=?, prenom=?, specialite=?, telephone=? WHERE id=?";
+        String sql = "UPDATE medecin SET nom=?, prenom=?, specialite=?, telephone=?,email=? WHERE id=?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -102,6 +103,7 @@ public class MedecinDAO {
             ps.setString(3, m.getSpecialite());
             ps.setString(4, m.getTelephone());
             ps.setInt(5, m.getId());
+            ps.setString(6, m.getEmail());
 
             ps.executeUpdate();
         }
@@ -137,7 +139,8 @@ public class MedecinDAO {
                 rs.getString("nom"),
                 rs.getString("prenom"),
                 rs.getString("specialite"),
-                rs.getString("telephone")
+                rs.getString("telephone"),
+                rs.getString("email")
         );
     }
 }
