@@ -17,8 +17,8 @@
 
 <BorderPane styleClass="medecin-background"
             stylesheets="@../css/medecin.css"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
             fx:controller="tn.hopital.ui.controller.MedecinController">
 
     <!-- ==================== BARRE DU HAUT ==================== -->

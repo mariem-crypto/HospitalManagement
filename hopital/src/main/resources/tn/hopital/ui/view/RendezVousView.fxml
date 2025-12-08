@@ -19,8 +19,8 @@
 <BorderPane
         styleClass="rendezvous-background"
         stylesheets="@../css/rendezvous.css"
-        xmlns="http://javafx.com/javafx/21"
-        xmlns:fx="http://javafx.com/fxml/1"
+        xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
         fx:controller="tn.hopital.ui.controller.RendezVousController">
 
     <!-- ==================== TOP BAR ==================== -->
