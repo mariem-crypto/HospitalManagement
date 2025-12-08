@@ -15,7 +15,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="medecin-background" stylesheets="@../css/medecin.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.hopital.ui.controller.MedecinController">
+<BorderPane styleClass="medecin-background"
+            stylesheets="@../css/medecin.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.hopital.ui.controller.MedecinController">
 
     <!-- ==================== BARRE DU HAUT ==================== -->
     <top>
@@ -53,25 +57,41 @@
 
                     <!-- Ligne 1 -->
                     <Label styleClass="field-label" text="Nom :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="txtNom" promptText="Nom de famille" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtNom" promptText="Nom de famille"
+                               styleClass="text-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                     <!-- Ligne 2 -->
                     <Label styleClass="field-label" text="Prénom :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="txtPrenom" promptText="Prénom" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtPrenom" promptText="Prénom"
+                               styleClass="text-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- Ligne 3 -->
                     <Label styleClass="field-label" text="Spécialité :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <ComboBox fx:id="cbSpecialite" promptText="Sélectionner une spécialité" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <ComboBox fx:id="cbSpecialite" promptText="Sélectionner une spécialité"
+                              styleClass="combo-box"
+                              GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                     <!-- Ligne 4 -->
                     <Label styleClass="field-label" text="Téléphone :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="txtTelephone" promptText="Ex: 99 123 456" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <TextField fx:id="txtTelephone" promptText="Ex: 99 123 456"
+                               styleClass="text-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                    <!-- Ligne 5 (Email) -->
+                    <Label styleClass="field-label" text="Email :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <TextField fx:id="txtEmail" promptText="exemple@hopital.tn"
+                               styleClass="text-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
                 </GridPane>
 
                 <!-- ==================== BOUTONS D'ACTION ==================== -->
@@ -88,11 +108,12 @@
                 <Label styleClass="section-title" text="Liste des médecins enregistrés" />
                 <TableView fx:id="tableMedecins" prefHeight="219.0" prefWidth="911.0" styleClass="modern-table">
                     <columns>
-                        <TableColumn fx:id="colId" prefWidth="157.6000770330429" text="ID" />
-                        <TableColumn fx:id="colNom" prefWidth="170.40000915527344" text="Nom" />
-                        <TableColumn fx:id="colPrenom" prefWidth="147.20001220703125" text="Prénom" />
-                        <TableColumn fx:id="colSpecialite" prefWidth="115.19992065429688" text="Spécialité" />
-                        <TableColumn fx:id="colTelephone" prefWidth="304.0" text="Téléphone" />
+                        <TableColumn fx:id="colId" prefWidth="80.0" text="ID" />
+                        <TableColumn fx:id="colNom" prefWidth="140.0" text="Nom" />
+                        <TableColumn fx:id="colPrenom" prefWidth="140.0" text="Prénom" />
+                        <TableColumn fx:id="colSpecialite" prefWidth="140.0" text="Spécialité" />
+                        <TableColumn fx:id="colTelephone" prefWidth="160.0" text="Téléphone" />
+                        <TableColumn fx:id="colEmail" prefWidth="250.0" text="Email" />
                     </columns>
                 </TableView>
             </VBox>

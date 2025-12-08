@@ -41,12 +41,6 @@
                 onAction="#onRdv"
                 styleClass="nav-btn"/>
 
-        <!-- 👉 Nouveau bouton ChatBot -->
-        <Button fx:id="btnChatBot"
-                text="🤖 ChatBot"
-                onAction="#onChatBot"
-                styleClass="nav-btn"/>
-
         <!-- Déconnexion -->
         <Button fx:id="btnLogout"
                 text="Déconnexion"

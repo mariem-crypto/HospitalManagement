@@ -4,10 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import tn.hopital.model.Medecin;
 import tn.hopital.model.Specialite;
 import tn.hopital.service.HopitalService;
-import tn.hopital.ui.util.AlertUtil;   // ✅ important
+import tn.hopital.ui.util.AlertUtil;
 
 public class MedecinController {
 
@@ -17,12 +19,14 @@ public class MedecinController {
     @FXML
     private TextField txtPrenom;
 
-    // ComboBox pour l'énumération Specialite
     @FXML
     private ComboBox<Specialite> cbSpecialite;
 
     @FXML
     private TextField txtTelephone;
+
+    @FXML
+    private TextField txtEmail;   // ✅ nouveau champ
 
     @FXML
     private TableView<Medecin> tableMedecins;
@@ -42,8 +46,11 @@ public class MedecinController {
     @FXML
     private TableColumn<Medecin, String> colTelephone;
 
+    @FXML
+    private TableColumn<Medecin, String> colEmail;  // ✅ nouvelle colonne
+
     private final HopitalService service = new HopitalService();
-    private ObservableList<Medecin> medecins = FXCollections.observableArrayList();
+    private final ObservableList<Medecin> medecins = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -52,24 +59,27 @@ public class MedecinController {
 
         // Bind des colonnes
         colId.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId()).asObject());
+                new SimpleIntegerProperty(data.getValue().getId()).asObject());
 
         colNom.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(data.getValue().getNom()));
+                new SimpleStringProperty(data.getValue().getNom()));
 
         colPrenom.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(data.getValue().getPrenom()));
+                new SimpleStringProperty(data.getValue().getPrenom()));
 
-        // afficher le texte de l'énumération (toString())
         colSpecialite.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(
+                new SimpleStringProperty(
                         data.getValue().getSpecialite() != null
                                 ? data.getValue().getSpecialite().toString()
                                 : ""
                 ));
 
         colTelephone.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
+                new SimpleStringProperty(data.getValue().getTelephone()));
+
+        // ✅ nouvelle colonne email
+        colEmail.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getEmail()));
 
         // Charger les données
         rafraichirTable();
@@ -91,6 +101,7 @@ public class MedecinController {
             txtPrenom.setText(m.getPrenom());
             cbSpecialite.setValue(m.getSpecialite());
             txtTelephone.setText(m.getTelephone());
+            txtEmail.setText(m.getEmail()); // ✅ remplissage email
         }
     }
 
@@ -101,12 +112,28 @@ public class MedecinController {
             String prenom = txtPrenom.getText();
             Specialite specialite = cbSpecialite.getValue();
             String telephone = txtTelephone.getText();
+            String email = txtEmail.getText();
 
-            if (specialite == null) {
-                throw new IllegalArgumentException("La spécialité est obligatoire");
+            // ✅ Quelques validations simples
+            if (nom == null || nom.isBlank()
+                    || prenom == null || prenom.isBlank()
+                    || telephone == null || telephone.isBlank()
+                    || email == null || email.isBlank()) {
+                throw new IllegalArgumentException("Tous les champs sont obligatoires.");
             }
 
-            Medecin m = new Medecin(nom, prenom, specialite, telephone);
+            if (specialite == null) {
+                throw new IllegalArgumentException("La spécialité est obligatoire.");
+            }
+
+            // Petite validation très basique d'email
+            if (!email.contains("@")) {
+                throw new IllegalArgumentException("Email invalide.");
+            }
+
+            // ⚠️ Adapte ce constructeur si ta classe Medecin est différente
+            Medecin m = new Medecin(nom, prenom, specialite, telephone, email);
+
             service.ajouterMedecin(m);
 
             rafraichirTable();
@@ -133,6 +160,7 @@ public class MedecinController {
             selection.setPrenom(txtPrenom.getText());
             selection.setSpecialite(cbSpecialite.getValue());
             selection.setTelephone(txtTelephone.getText());
+            selection.setEmail(txtEmail.getText()); // ✅ mise à jour email
 
             service.modifierMedecin(selection);
             rafraichirTable();
@@ -180,6 +208,8 @@ public class MedecinController {
         txtPrenom.clear();
         cbSpecialite.getSelectionModel().clearSelection();
         txtTelephone.clear();
+        txtEmail.clear();  // ✅ vider email aussi
     }
 }
+
 

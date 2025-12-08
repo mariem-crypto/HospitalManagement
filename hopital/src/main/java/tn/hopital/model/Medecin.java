@@ -7,22 +7,27 @@ public class Medecin {
     private String prenom;
     private Specialite specialite;
     private String telephone;
+    private String email; // 👉 Nouveau champ email
 
     public Medecin() {}
 
-    public Medecin(String nom, String prenom, Specialite specialite, String telephone) {
+    // Constructeur sans ID (pour insertion)
+    public Medecin(String nom, String prenom, Specialite specialite, String telephone, String email) {
         this.nom = nom;
         this.prenom = prenom;
         this.specialite = specialite;
         this.telephone = telephone;
+        this.email = email;
     }
 
-    public Medecin(int id, String nom, String prenom, Specialite specialite, String telephone) {
+    // Constructeur complet (pour lecture depuis BD)
+    public Medecin(int id, String nom, String prenom, Specialite specialite, String telephone, String email) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.specialite = specialite;
         this.telephone = telephone;
+        this.email = email;
     }
 
     // Getters / Setters
@@ -66,9 +71,16 @@ public class Medecin {
         this.telephone = telephone;
     }
 
+    public String getEmail() { // 👉 Getter email
+        return email;
+    }
+
+    public void setEmail(String email) { // 👉 Setter email
+        this.email = email;
+    }
+
     @Override
     public String toString() {
-        return nom + " " + prenom + " (" + specialite + ")";
+        return nom + " " + prenom + " (" + specialite + ", " + email + ")";
     }
 }
-

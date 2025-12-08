@@ -16,7 +16,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="rendezvous-background" stylesheets="@../css/rendezvous.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.hopital.ui.controller.RendezVousController">
+<BorderPane
+        styleClass="rendezvous-background"
+        stylesheets="@../css/rendezvous.css"
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="tn.hopital.ui.controller.RendezVousController">
 
     <!-- ==================== TOP BAR ==================== -->
     <top>
@@ -45,29 +50,34 @@
             <VBox spacing="20" styleClass="form-section">
                 <Label styleClass="section-title" text="Planifier un rendez-vous" />
 
-                <GridPane hgap="20" styleClass="form-grid" vgap="16">
+                <GridPane hgap="20" vgap="16" styleClass="form-grid">
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" minWidth="140" />
                         <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
 
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+
                     <Label styleClass="field-label" text="Patient :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <ComboBox fx:id="cbPatient" promptText="Sélectionner un patient" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <ComboBox fx:id="cbPatient" promptText="Sélectionner un patient"
+                              styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                     <Label styleClass="field-label" text="Médecin :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <ComboBox fx:id="cbMedecin" promptText="Sélectionner un médecin" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="cbMedecin" promptText="Sélectionner un médecin"
+                              styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <Label styleClass="field-label" text="Date :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <DatePicker fx:id="dpDate" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <DatePicker fx:id="dpDate" styleClass="date-picker"
+                                GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                     <Label styleClass="field-label" text="Heure (HH:mm) :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="txtHeure" promptText="ex: 14:30" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <TextField fx:id="txtHeure" promptText="ex: 14:30" styleClass="text-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 </GridPane>
 
                 <!-- Boutons -->
@@ -76,9 +86,10 @@
                     <Button onAction="#onSupprimer" styleClass="btn-danger btn-large" text="Supprimer" />
                     <Button onAction="#onClear" styleClass="btn-secondary btn-large" text="Vider" />
                 </HBox>
-            <VBox.margin>
-               <Insets bottom="10.0" />
-            </VBox.margin>
+
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
             </VBox>
 
             <!-- ==================== TABLEAU ==================== -->
@@ -93,10 +104,11 @@
                         <TableColumn fx:id="colDateHeure" prefWidth="244.00006103515625" text="Date &amp; Heure" />
                     </columns>
                 </TableView>
-            <padding>
-               <Insets bottom="15.0" left="30.0" right="30.0" />
-            </padding>
+                <padding>
+                    <Insets bottom="15.0" left="30.0" right="30.0" />
+                </padding>
             </VBox>
         </VBox>
     </center>
 </BorderPane>
+

@@ -17,4 +17,9 @@ public enum Specialite {
         String name = name().toLowerCase().replace("_", " ");
         return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
+
+	boolean isBlank() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

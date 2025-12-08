@@ -9,9 +9,9 @@ import java.util.List;
 
 public class PatientDAO {
 
-    //  Ajouter un patient
+    // ➤ Ajouter un patient
     public void save(Patient p) throws SQLException {
-        String sql = "INSERT INTO patient(nom, prenom, date_naissance, adresse, telephone) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO patient(nom, prenom, date_naissance, adresse, telephone, email) VALUES (?,?,?,?,?,?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -21,10 +21,10 @@ public class PatientDAO {
             ps.setDate(3, p.getDateNaissance() != null ? Date.valueOf(p.getDateNaissance()) : null);
             ps.setString(4, p.getAdresse());
             ps.setString(5, p.getTelephone());
+            ps.setString(6, p.getEmail());   // ✅ email ajouté
 
             ps.executeUpdate();
 
-            // récupérer l'id généré
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 p.setId(rs.getInt(1));
@@ -32,7 +32,7 @@ public class PatientDAO {
         }
     }
 
-    //  Voir tous les patients
+    // ➤ Voir tous les patients
     public List<Patient> findAll() throws SQLException {
         List<Patient> list = new ArrayList<>();
         String sql = "SELECT * FROM patient ORDER BY nom";
@@ -48,7 +48,7 @@ public class PatientDAO {
         return list;
     }
 
-    //  Trouver un patient par id
+    // ➤ Trouver par ID
     public Patient findById(int id) throws SQLException {
         String sql = "SELECT * FROM patient WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -64,9 +64,9 @@ public class PatientDAO {
         return null;
     }
 
-    //  Modifier un patient
+    // ➤ Modifier un patient
     public void update(Patient p) throws SQLException {
-        String sql = "UPDATE patient SET nom=?, prenom=?, date_naissance=?, adresse=?, telephone=? WHERE id=?";
+        String sql = "UPDATE patient SET nom=?, prenom=?, date_naissance=?, adresse=?, telephone=?, email=? WHERE id=?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -76,23 +76,25 @@ public class PatientDAO {
             ps.setDate(3, p.getDateNaissance() != null ? Date.valueOf(p.getDateNaissance()) : null);
             ps.setString(4, p.getAdresse());
             ps.setString(5, p.getTelephone());
-            ps.setInt(6, p.getId());
+            ps.setString(6, p.getEmail());  // ✅ email ajouté
+            ps.setInt(7, p.getId());
 
             ps.executeUpdate();
         }
     }
 
-    // Supprimer un patient
+    // ➤ Supprimer un patient
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM patient WHERE id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
 
-    //  Méthode utilitaire
+    // ➤ Mapping SQL → Objet Patient
     private Patient map(ResultSet rs) throws SQLException {
         return new Patient(
                 rs.getInt("id"),
@@ -100,7 +102,9 @@ public class PatientDAO {
                 rs.getString("prenom"),
                 rs.getDate("date_naissance") != null ? rs.getDate("date_naissance").toLocalDate() : null,
                 rs.getString("adresse"),
-                rs.getString("telephone")
+                rs.getString("telephone"),
+                rs.getString("email")  // ✅ récupération email
         );
     }
 }
+

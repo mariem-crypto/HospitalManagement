@@ -4,38 +4,48 @@ import tn.hopital.dao.AdminDAO;
 import tn.hopital.dao.MedecinDAO;
 import tn.hopital.dao.PatientDAO;
 import tn.hopital.dao.RendezVousDAO;
+
 import tn.hopital.model.Admin;
 import tn.hopital.model.Medecin;
 import tn.hopital.model.Patient;
 import tn.hopital.model.RendezVous;
+
 import tn.hopital.util.PasswordUtil;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Service métier de l'application Hôpital.
+ * Gère les opérations sur les administrateurs, patients, médecins et rendez-vous.
+ */
 public class HopitalService {
 
     private final PatientDAO patientDAO;
     private final MedecinDAO medecinDAO;
     private final RendezVousDAO rendezVousDAO;
-    private final AdminDAO adminDAO;   // 🔹 nouveau
+    private final AdminDAO adminDAO;
 
+    /**
+     * Constructeur : initialise les DAO.
+     */
     public HopitalService() {
         this.patientDAO = new PatientDAO();
         this.medecinDAO = new MedecinDAO();
         this.rendezVousDAO = new RendezVousDAO();
-        this.adminDAO = new AdminDAO();   // 🔹 initialisation
+        this.adminDAO = new AdminDAO();
     }
 
-    // ================== LOGIN ADMIN ================== //
+    // -------------------- LOGIN ADMIN --------------------
 
     /**
      * Vérifie le login d'un administrateur.
+     *
      * @param username login saisi
      * @param password mot de passe en clair (saisi dans l'UI)
-     * @return l'objet Admin si OK
-     * @throws IllegalArgumentException si login/mot de passe incorrect
+     * @return l'objet Admin si l'authentification est correcte
+     * @throws IllegalArgumentException si login ou mot de passe sont incorrects
      */
     public Admin login(String username, String password) {
         try {
@@ -44,7 +54,7 @@ public class HopitalService {
                 throw new IllegalArgumentException("Utilisateur inconnu");
             }
 
-            // Vérification du mot de passe avec BCrypt
+            // Vérification du mot de passe (BCrypt)
             boolean ok = PasswordUtil.checkPassword(password, admin.getPassword());
             if (!ok) {
                 throw new IllegalArgumentException("Mot de passe incorrect");
@@ -57,8 +67,13 @@ public class HopitalService {
         }
     }
 
-    // ================== PATIENTS ================== //
+    // -------------------- PATIENTS --------------------
 
+    /**
+     * Retourne la liste de tous les patients.
+     *
+     * @return liste des patients
+     */
     public List<Patient> listerPatients() {
         try {
             return patientDAO.findAll();
@@ -67,6 +82,12 @@ public class HopitalService {
         }
     }
 
+    /**
+     * Ajoute un patient à la base.
+     *
+     * @param p le patient à ajouter
+     * @throws IllegalArgumentException si nom ou prénom sont vides
+     */
     public void ajouterPatient(Patient p) {
         if (p.getNom() == null || p.getNom().isBlank()) {
             throw new IllegalArgumentException("Le nom du patient est obligatoire");
@@ -82,6 +103,12 @@ public class HopitalService {
         }
     }
 
+    /**
+     * Modifie un patient existant.
+     *
+     * @param p le patient à modifier
+     * @throws IllegalArgumentException si le patient n'a pas d'identifiant
+     */
     public void modifierPatient(Patient p) {
         if (p.getId() <= 0) {
             throw new IllegalArgumentException("Patient sans identifiant");
@@ -93,6 +120,11 @@ public class HopitalService {
         }
     }
 
+    /**
+     * Supprime un patient par son ID.
+     *
+     * @param idPatient l'identifiant du patient
+     */
     public void supprimerPatient(int idPatient) {
         try {
             patientDAO.delete(idPatient);
@@ -101,8 +133,13 @@ public class HopitalService {
         }
     }
 
-    // ================== MEDECINS ================== //
+    // -------------------- MEDECINS --------------------
 
+    /**
+     * Retourne la liste de tous les médecins.
+     *
+     * @return liste des médecins
+     */
     public List<Medecin> listerMedecins() {
         try {
             return medecinDAO.findAll();
@@ -111,10 +148,18 @@ public class HopitalService {
         }
     }
 
+    /**
+     * Ajoute un médecin à la base.
+     *
+     * @param m le médecin à ajouter
+     * @throws IllegalArgumentException si nom ou spécialité sont vides
+     */
     public void ajouterMedecin(Medecin m) {
         if (m.getNom() == null || m.getNom().isBlank()) {
             throw new IllegalArgumentException("Le nom du médecin est obligatoire");
         }
+
+        // ICI : on ne fait plus isBlank() sur Specialite
         if (m.getSpecialite() == null) {
             throw new IllegalArgumentException("La spécialité du médecin est obligatoire");
         }
@@ -126,6 +171,12 @@ public class HopitalService {
         }
     }
 
+    /**
+     * Modifie un médecin existant.
+     *
+     * @param m le médecin à modifier
+     * @throws IllegalArgumentException si le médecin n'a pas d'identifiant
+     */
     public void modifierMedecin(Medecin m) {
         if (m.getId() <= 0) {
             throw new IllegalArgumentException("Médecin sans identifiant");
@@ -137,6 +188,11 @@ public class HopitalService {
         }
     }
 
+    /**
+     * Supprime un médecin par son ID.
+     *
+     * @param idMedecin l'identifiant du médecin
+     */
     public void supprimerMedecin(int idMedecin) {
         try {
             medecinDAO.delete(idMedecin);
@@ -145,8 +201,13 @@ public class HopitalService {
         }
     }
 
-    // ================== RENDEZ-VOUS ================== //
+    // -------------------- RENDEZ-VOUS --------------------
 
+    /**
+     * Retourne la liste de tous les rendez-vous.
+     *
+     * @return liste des rendez-vous
+     */
     public List<RendezVous> listerRendezVous() {
         try {
             return rendezVousDAO.findAll();
@@ -155,6 +216,14 @@ public class HopitalService {
         }
     }
 
+    /**
+     * Planifie un rendez-vous pour un patient avec un médecin à une date donnée.
+     *
+     * @param patient le patient concerné
+     * @param medecin le médecin concerné
+     * @param dateRdv la date et heure du rendez-vous
+     * @throws IllegalArgumentException si le patient, le médecin ou la date sont invalides
+     */
     public void planifierRendezVous(Patient patient, Medecin medecin, LocalDateTime dateRdv) {
         if (patient == null || patient.getId() <= 0) {
             throw new IllegalArgumentException("Patient invalide pour le rendez-vous");
@@ -170,17 +239,80 @@ public class HopitalService {
 
         try {
             rendezVousDAO.save(rdv);
+            // Envoi des emails seulement si l'enregistrement s'est bien passé
+            sendEmails(rdv);
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de la création du rendez-vous", e);
         }
     }
 
+    /**
+     * Supprime un rendez-vous par son ID.
+     *
+     * @param idRdv l'identifiant du rendez-vous
+     */
     public void supprimerRendezVous(int idRdv) {
         try {
             rendezVousDAO.delete(idRdv);
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de la suppression du rendez-vous", e);
         }
+    }
+
+    // -------------------- EMAILS --------------------
+
+    /**
+     * Envoie les emails de confirmation au patient et au médecin.
+     *
+     * @param rdv le rendez-vous créé
+     */
+    private void sendEmails(RendezVous rdv) {
+        String date = rdv.getDateRdv().toString();
+
+        // ========= EMAIL POUR LE PATIENT =========
+        String messagePatient =
+                "----------------------------------------\n" +
+                "     CONFIRMATION DE RENDEZ-VOUS\n" +
+                "----------------------------------------\n\n" +
+                "Bonjour " + rdv.getPatient().getPrenom() + " " + rdv.getPatient().getNom() + ",\n\n" +
+                "Votre rendez-vous a été confirmé avec succès.\n\n" +
+                "📅 Détails du rendez-vous\n" +
+                " - Date et heure : " + date + "\n" +
+                " - Médecin : Dr. " + rdv.getMedecin().getNom() + " " + rdv.getMedecin().getPrenom() + "\n" +
+                " - Spécialité : " + rdv.getMedecin().getSpecialite() + "\n\n" +
+                "Merci de vous présenter 10 minutes avant l'heure prévue.\n\n" +
+                "Pour toute modification ou annulation, veuillez contacter le service d'accueil.\n\n" +
+                "Cordialement,\n" +
+                "Hôpital - Service des Rendez-Vous\n";
+
+        EmailSender.sendEmail(
+                rdv.getPatient().getEmail(),
+                "Votre rendez-vous est confirmé",
+                messagePatient
+        );
+
+        // ========= EMAIL POUR LE MÉDECIN =========
+        String messageMedecin =
+                "----------------------------------------\n" +
+                "     NOUVEAU RENDEZ-VOUS PROGRAMMÉ\n" +
+                "----------------------------------------\n\n" +
+                "Bonjour Dr. " + rdv.getMedecin().getNom() + ",\n\n" +
+                "Un nouveau rendez-vous a été ajouté à votre planning.\n\n" +
+                "👤 Patient\n" +
+                " - Nom : " + rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom() + "\n" +
+                " - Téléphone : " + rdv.getPatient().getTelephone() + "\n\n" +
+                "📅 Détails du rendez-vous\n" +
+                " - Date et heure : " + date + "\n" +
+                " - Spécialité concernée : " + rdv.getMedecin().getSpecialite() + "\n\n" +
+                "Veuillez vérifier votre planning dans le système.\n\n" +
+                "Cordialement,\n" +
+                "Système de Gestion des Rendez-Vous\n";
+
+        EmailSender.sendEmail(
+                rdv.getMedecin().getEmail(),
+                "Nouveau rendez-vous dans votre planning",
+                messageMedecin
+        );
     }
 }
 

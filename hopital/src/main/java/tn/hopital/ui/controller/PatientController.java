@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import tn.hopital.model.Patient;
 import tn.hopital.service.HopitalService;
-import tn.hopital.ui.util.AlertUtil;   // ✅ IMPORTANT
+import tn.hopital.ui.util.AlertUtil;
 
 import java.time.LocalDate;
 
@@ -28,6 +28,9 @@ public class PatientController {
     private TextField txtTelephone;
 
     @FXML
+    private TextField txtEmail;   // 👉 nouveau champ
+
+    @FXML
     private TableView<Patient> tablePatients;
 
     @FXML
@@ -38,7 +41,7 @@ public class PatientController {
 
     @FXML
     private TableColumn<Patient, String> colPrenom;
-    
+
     @FXML
     private TableColumn<Patient, String> colAdresse;
 
@@ -47,6 +50,9 @@ public class PatientController {
 
     @FXML
     private TableColumn<Patient, String> colTelephone;
+
+    @FXML
+    private TableColumn<Patient, String> colEmail;  // 👉 nouvelle colonne
 
     private final HopitalService service = new HopitalService();
     private ObservableList<Patient> patients = FXCollections.observableArrayList();
@@ -65,7 +71,10 @@ public class PatientController {
         colTelephone.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
         colAdresse.setCellValueFactory(data ->
-        new javafx.beans.property.SimpleStringProperty(data.getValue().getAdresse()));
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getAdresse()));
+        colEmail.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getEmail()));
+
         // Charger les données
         rafraichirTable();
 
@@ -87,6 +96,7 @@ public class PatientController {
             dpDateNaissance.setValue(p.getDateNaissance());
             txtAdresse.setText(p.getAdresse());
             txtTelephone.setText(p.getTelephone());
+            txtEmail.setText(p.getEmail());
         }
     }
 
@@ -98,8 +108,10 @@ public class PatientController {
             LocalDate dateNaissance = dpDateNaissance.getValue();
             String adresse = txtAdresse.getText();
             String telephone = txtTelephone.getText();
+            String email = txtEmail.getText();
 
-            Patient p = new Patient(nom, prenom, dateNaissance, adresse, telephone);
+            // Ici j’utilise le constructeur avec email
+            Patient p = new Patient(nom, prenom, dateNaissance, adresse, telephone, email);
             service.ajouterPatient(p);
 
             rafraichirTable();
@@ -127,6 +139,7 @@ public class PatientController {
             selection.setDateNaissance(dpDateNaissance.getValue());
             selection.setAdresse(txtAdresse.getText());
             selection.setTelephone(txtTelephone.getText());
+            selection.setEmail(txtEmail.getText());
 
             service.modifierPatient(selection);
             rafraichirTable();
@@ -175,5 +188,6 @@ public class PatientController {
         dpDateNaissance.setValue(null);
         txtAdresse.clear();
         txtTelephone.clear();
+        txtEmail.clear();
     }
 }

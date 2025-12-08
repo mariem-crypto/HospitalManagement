@@ -54,11 +54,18 @@
             <version>8.0.33</version>
         </dependency>
 
-        <!-- 🔐 BCrypt pour hasher les mots de passe -->
+        <!-- BCrypt pour hasher les mots de passe -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
+        </dependency>
+
+        <!-- ✅ Jakarta Mail (nécessaire pour jakarta.mail.*) -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
         </dependency>
 
     </dependencies>
@@ -74,8 +81,9 @@
                 <configuration>
                     <mainClass>tn.hopital.MainApp</mainClass>
                     <launcher>maven</launcher>
+                    <!-- Le warning sur jvmArgs n'empêche pas la compilation -->
                     <jvmArgs>
-                      <jvmArg>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmArg>
                     </jvmArgs>
                 </configuration>
             </plugin>
@@ -84,4 +92,5 @@
     </build>
 
 </project>
+
 
