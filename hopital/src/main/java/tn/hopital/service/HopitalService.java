@@ -9,12 +9,21 @@ import tn.hopital.model.Admin;
 import tn.hopital.model.Medecin;
 import tn.hopital.model.Patient;
 import tn.hopital.model.RendezVous;
+import tn.hopital.model.Specialite;
 
 import tn.hopital.util.PasswordUtil;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+
+// ✅ imports pour Set / Map / Streams
+import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Service métier de l'application Hôpital.
@@ -159,7 +168,7 @@ public class HopitalService {
             throw new IllegalArgumentException("Le nom du médecin est obligatoire");
         }
 
-        // ICI : on ne fait plus isBlank() sur Specialite
+        // spécialité = enum → on vérifie seulement null
         if (m.getSpecialite() == null) {
             throw new IllegalArgumentException("La spécialité du médecin est obligatoire");
         }
@@ -313,6 +322,90 @@ public class HopitalService {
                 "Nouveau rendez-vous dans votre planning",
                 messageMedecin
         );
+    }
+
+    // ============================================================
+    //    ✅ PARTIE DEMANDÉE : COLLECTIONS (SET, MAP) + STREAMS
+    // ============================================================
+
+    /**
+     * Exemple avec un SET + STREAM :
+     * retourne l'ensemble des spécialités distinctes des médecins.
+     *
+     * @return un Set contenant les spécialités existantes.
+     */
+    public Set<Specialite> listerSpecialitesMedecins() {
+        try {
+            return medecinDAO.findAll().stream()
+                    .map(Medecin::getSpecialite)         // extrait la spécialité
+                    .filter(Objects::nonNull)            // on enlève les null
+                    .collect(Collectors.toSet());        // => Set<Specialite>
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors du chargement des spécialités des médecins", e);
+        }
+    }
+
+    /**
+     * Exemple avec un MAP (version impérative sans stream) :
+     * indexer tous les médecins par leur identifiant.
+     *
+     * @return une Map : idMedecin -> Medecin
+     */
+    public Map<Integer, Medecin> mapMedecinsParId() {
+        try {
+            Map<Integer, Medecin> map = new HashMap<>();
+            for (Medecin m : medecinDAO.findAll()) {
+                map.put(m.getId(), m);
+            }
+            return map;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors du mapping des médecins par id", e);
+        }
+    }
+
+    /**
+     * Exemple avec STREAM + MAP :
+     * calcule le nombre de médecins par spécialité.
+     *
+     * @return Map<Specialite, Long> où la clé est la spécialité,
+     *         et la valeur le nombre de médecins de cette spécialité.
+     */
+    public Map<Specialite, Long> compterMedecinsParSpecialite() {
+        try {
+            return medecinDAO.findAll().stream()
+                    .filter(m -> m.getSpecialite() != null)
+                    .collect(Collectors.groupingBy(
+                            Medecin::getSpecialite,
+                            Collectors.counting()
+                    ));
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors des statistiques médecins/spécialités", e);
+        }
+    }
+
+    /**
+     * Exemple de STREAM sur les rendez-vous :
+     * retourne uniquement les rendez-vous à venir (date > maintenant).
+     *
+     * @return liste des rendez-vous futurs
+     */
+    public List<RendezVous> listerRendezVousAVenir() {
+        return listerRendezVous().stream()
+                .filter(rdv -> rdv.getDateRdv().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Exemple de STREAM sur les patients :
+     * retourne un Set des emails non vides de tous les patients.
+     *
+     * @return Set<String> des emails de patients
+     */
+    public Set<String> listerEmailsPatients() {
+        return listerPatients().stream()
+                .map(Patient::getEmail)
+                .filter(email -> email != null && !email.isBlank())
+                .collect(Collectors.toSet());
     }
 }
 

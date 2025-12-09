@@ -4,7 +4,7 @@ public class Admin {
 
     private int id;
     private String username;
-    // ⚠ ici on stocke le mot de passe HASHÉ, pas en clair
+    //  ici on stocke le mot de passe HASHÉ, pas en clair
     private String password;
 
     public Admin() {

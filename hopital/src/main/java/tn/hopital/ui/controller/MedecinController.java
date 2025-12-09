@@ -11,6 +11,10 @@ import tn.hopital.model.Specialite;
 import tn.hopital.service.HopitalService;
 import tn.hopital.ui.util.AlertUtil;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
+
 public class MedecinController {
 
     @FXML
@@ -26,7 +30,7 @@ public class MedecinController {
     private TextField txtTelephone;
 
     @FXML
-    private TextField txtEmail;   // ✅ nouveau champ
+    private TextField txtEmail;   // champ email
 
     @FXML
     private TableView<Medecin> tableMedecins;
@@ -47,11 +51,24 @@ public class MedecinController {
     private TableColumn<Medecin, String> colTelephone;
 
     @FXML
-    private TableColumn<Medecin, String> colEmail;  // ✅ nouvelle colonne
+    private TableColumn<Medecin, String> colEmail;  // colonne email
+
+    // 🔹 ListViews pour montrer Set / Map / Stream
+    @FXML
+    private ListView<String> listSpecialites;        // spécialités uniques (Set)
+
+    @FXML
+    private ListView<String> listStatsSpecialites;   // stats par spécialité (Map + Stream)
+
+    @FXML
+    private ListView<String> listMedecinsParId;      // Map<Integer, Medecin> visualisée
 
     private final HopitalService service = new HopitalService();
     private final ObservableList<Medecin> medecins = FXCollections.observableArrayList();
 
+    // =========================================================
+    //                INITIALISATION
+    // =========================================================
     @FXML
     private void initialize() {
         // Remplir la ComboBox avec toutes les valeurs de l'enum
@@ -77,12 +94,14 @@ public class MedecinController {
         colTelephone.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getTelephone()));
 
-        // ✅ nouvelle colonne email
         colEmail.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getEmail()));
 
         // Charger les données
         rafraichirTable();
+
+        // Charger les stats (Set + Map via Streams)
+        updateStats();
 
         // Quand on sélectionne un médecin dans la table → remplir le formulaire
         tableMedecins.getSelectionModel().selectedItemProperty().addListener(
@@ -95,13 +114,68 @@ public class MedecinController {
         tableMedecins.setItems(medecins);
     }
 
+    // =========================================================
+    //                STATS : SET / MAP / STREAMS
+    // =========================================================
+
+    /**
+     * Met à jour les ListView pour montrer :
+     *  - les spécialités distinctes (Set + Stream)
+     *  - les statistiques nb médecins / spécialité (Map + Stream)
+     *  - l’index des médecins par ID (Map<Integer, Medecin>)
+     */
+    private void updateStats() {
+        // ---- 1) Spécialités distinctes via Set + Stream ----
+        Set<Specialite> specialites = service.listerSpecialitesMedecins();
+        if (listSpecialites != null) {
+            listSpecialites.getItems().setAll(
+                    specialites.stream()
+                            .sorted(Comparator.comparing(Enum::name))
+                            .map(Specialite::name)
+                            .toList()
+            );
+        }
+
+        // ---- 2) Nombre de médecins par spécialité via Map + Stream ----
+        Map<Specialite, Long> stats = service.compterMedecinsParSpecialite();
+        if (listStatsSpecialites != null) {
+            listStatsSpecialites.getItems().setAll(
+                    stats.entrySet().stream()
+                            .sorted(Map.Entry.comparingByKey(Comparator.comparing(Enum::name)))
+                            .map(e -> e.getKey() + " : " + e.getValue() + " médecin(s)")
+                            .toList()
+            );
+        }
+
+        // ---- 3) Index des médecins par ID (Map<Integer, Medecin>) ----
+        Map<Integer, Medecin> mapId = service.mapMedecinsParId();
+        if (listMedecinsParId != null) {
+            listMedecinsParId.getItems().setAll(
+                    mapId.entrySet().stream()
+                            .sorted(Map.Entry.comparingByKey())
+                            .map(e -> e.getKey() + " : "
+                                    + e.getValue().getNom() + " "
+                                    + e.getValue().getPrenom() + " ("
+                                    + (e.getValue().getSpecialite() != null
+                                       ? e.getValue().getSpecialite()
+                                       : "N/A")
+                                    + ")")
+                            .toList()
+            );
+        }
+    }
+
+    // =========================================================
+    //                FORMULAIRE
+    // =========================================================
+
     private void afficherDetailsMedecin(Medecin m) {
         if (m != null) {
             txtNom.setText(m.getNom());
             txtPrenom.setText(m.getPrenom());
             cbSpecialite.setValue(m.getSpecialite());
             txtTelephone.setText(m.getTelephone());
-            txtEmail.setText(m.getEmail()); // ✅ remplissage email
+            txtEmail.setText(m.getEmail());
         }
     }
 
@@ -114,7 +188,6 @@ public class MedecinController {
             String telephone = txtTelephone.getText();
             String email = txtEmail.getText();
 
-            // ✅ Quelques validations simples
             if (nom == null || nom.isBlank()
                     || prenom == null || prenom.isBlank()
                     || telephone == null || telephone.isBlank()
@@ -126,17 +199,16 @@ public class MedecinController {
                 throw new IllegalArgumentException("La spécialité est obligatoire.");
             }
 
-            // Petite validation très basique d'email
             if (!email.contains("@")) {
                 throw new IllegalArgumentException("Email invalide.");
             }
 
-            // ⚠️ Adapte ce constructeur si ta classe Medecin est différente
             Medecin m = new Medecin(nom, prenom, specialite, telephone, email);
 
             service.ajouterMedecin(m);
 
             rafraichirTable();
+            updateStats();  // 🔁 mettre à jour Set/Map/Stream
             clearForm();
             AlertUtil.showInfo("Succès", "Médecin ajouté avec succès.");
         } catch (IllegalArgumentException e) {
@@ -160,10 +232,11 @@ public class MedecinController {
             selection.setPrenom(txtPrenom.getText());
             selection.setSpecialite(cbSpecialite.getValue());
             selection.setTelephone(txtTelephone.getText());
-            selection.setEmail(txtEmail.getText()); // ✅ mise à jour email
+            selection.setEmail(txtEmail.getText());
 
             service.modifierMedecin(selection);
             rafraichirTable();
+            updateStats();  // 🔁 les stats peuvent changer
             AlertUtil.showInfo("Succès", "Médecin modifié avec succès.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,6 +261,7 @@ public class MedecinController {
             try {
                 service.supprimerMedecin(selection.getId());
                 rafraichirTable();
+                updateStats();  // 🔁 après suppression
                 clearForm();
                 AlertUtil.showInfo("Succès", "Médecin supprimé.");
             } catch (Exception e) {
@@ -208,8 +282,7 @@ public class MedecinController {
         txtPrenom.clear();
         cbSpecialite.getSelectionModel().clearSelection();
         txtTelephone.clear();
-        txtEmail.clear();  // ✅ vider email aussi
+        txtEmail.clear();
     }
 }
-
 

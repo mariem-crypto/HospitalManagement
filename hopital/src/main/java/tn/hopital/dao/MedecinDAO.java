@@ -18,9 +18,9 @@ public class MedecinDAO {
 
             ps.setString(1, m.getNom());
             ps.setString(2, m.getPrenom());
-            ps.setString(3, m.getSpecialite().name());   // ENUM → String
+            ps.setString(3, m.getSpecialite().name());   
             ps.setString(4, m.getTelephone());
-            ps.setString(5, m.getEmail());               // ✅ ajout email
+            ps.setString(5, m.getEmail());               
 
             ps.executeUpdate();
 
@@ -73,9 +73,9 @@ public class MedecinDAO {
 
             ps.setString(1, m.getNom());
             ps.setString(2, m.getPrenom());
-            ps.setString(3, m.getSpecialite().name());  // ENUM → String
+            ps.setString(3, m.getSpecialite().name());  
             ps.setString(4, m.getTelephone());
-            ps.setString(5, m.getEmail());              // ✅ ajout email
+            ps.setString(5, m.getEmail());              
             ps.setInt(6, m.getId());
 
             ps.executeUpdate();
@@ -105,7 +105,7 @@ public class MedecinDAO {
                 rs.getString("prenom"),
                 specialite,
                 rs.getString("telephone"),
-                rs.getString("email")   // ✅ récupération email
+                rs.getString("email")   
         );
     }
 

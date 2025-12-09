@@ -8,7 +8,7 @@ import tn.hopital.model.Medecin;
 import tn.hopital.model.Patient;
 import tn.hopital.model.RendezVous;
 import tn.hopital.service.HopitalService;
-import tn.hopital.ui.util.AlertUtil;   
+import tn.hopital.ui.util.AlertUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +44,12 @@ public class RendezVousController {
 
     @FXML
     private TableColumn<RendezVous, String> colDateHeure;
+
+    // (optionnel) si tu ajoutes un bouton ou une checkbox dans le FXML
+    @FXML
+    private Button btnRdvAvenir;      // si tu l’utilises dans le FXML
+    @FXML
+    private Button btnRdvTous;        // idem
 
     private final HopitalService service = new HopitalService();
     private final ObservableList<RendezVous> rdvList = FXCollections.observableArrayList();
@@ -82,7 +88,7 @@ public class RendezVousController {
                         data.getValue().getDateRdv().format(DATE_HEURE_FORMATTER)
                 ));
 
-        // Charger les RDV existants
+        // Charger tous les RDV au départ
         rafraichirTable();
 
         // Quand on sélectionne un rdv dans la table, remplir le formulaire
@@ -91,6 +97,7 @@ public class RendezVousController {
         );
     }
 
+    // ----- Chargement des données dans la table -----
     private void rafraichirTable() {
         rdvList.setAll(service.listerRendezVous());
         tableRdv.setItems(rdvList);
@@ -106,6 +113,7 @@ public class RendezVousController {
         }
     }
 
+    // ----- Bouton : Ajouter -----
     @FXML
     private void onAjouter() {
         try {
@@ -150,6 +158,7 @@ public class RendezVousController {
         }
     }
 
+    // ----- Bouton : Supprimer -----
     @FXML
     private void onSupprimer() {
         RendezVous selection = tableRdv.getSelectionModel().getSelectedItem();
@@ -176,6 +185,7 @@ public class RendezVousController {
         }
     }
 
+    // ----- Bouton : Vider -----
     @FXML
     private void onClear() {
         clearForm();
@@ -188,4 +198,28 @@ public class RendezVousController {
         dpDate.setValue(null);
         txtHeure.clear();
     }
+
+    // =========================================================
+    //  ✅ FILTRE : AFFICHER UNIQUEMENT LES RDV À VENIR
+    // =========================================================
+
+    /**
+     * Appelé par un bouton "RDV à venir" dans RendezVousView.fxml :
+     * <Button text="RDV à venir" onAction="#onAfficherRdvAVenir"/>
+     */
+    @FXML
+    private void onAfficherRdvAVenir() {
+        rdvList.setAll(service.listerRendezVousAVenir());
+        tableRdv.setItems(rdvList);
+    }
+
+    /**
+     * Appelé par un bouton "Tous les RDV" :
+     * <Button text="Tous les RDV" onAction="#onAfficherTousRdv"/>
+     */
+    @FXML
+    private void onAfficherTousRdv() {
+        rafraichirTable();
+    }
 }
+

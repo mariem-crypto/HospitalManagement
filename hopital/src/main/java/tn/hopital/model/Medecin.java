@@ -71,11 +71,11 @@ public class Medecin {
         this.telephone = telephone;
     }
 
-    public String getEmail() { // 👉 Getter email
+    public String getEmail() { //  Getter email
         return email;
     }
 
-    public void setEmail(String email) { // 👉 Setter email
+    public void setEmail(String email) { //  Setter email
         this.email = email;
     }
 

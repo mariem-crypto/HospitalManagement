@@ -10,7 +10,7 @@ public class Patient {
     private LocalDate dateNaissance;
     private String adresse;
     private String telephone;
-    private String email;  // 👉 Nouveau champ email
+    private String email;  
 
     // Constructeur vide (obligatoire pour JavaFX, JDBC, etc.)
     public Patient() {
@@ -88,11 +88,11 @@ public class Patient {
         this.telephone = telephone;
     }
 
-    public String getEmail() {   // 👉 Getter email
+    public String getEmail() {   //  Getter email
         return email;
     }
 
-    public void setEmail(String email) {  // 👉 Setter email
+    public void setEmail(String email) {  //  Setter email
         this.email = email;
     }
 

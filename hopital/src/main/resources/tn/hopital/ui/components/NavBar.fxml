@@ -6,47 +6,32 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
-<HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="tn.hopital.ui.controller.NavBarController"
-      styleClass="navbar"
-      spacing="20">
+<HBox spacing="20" styleClass="navbar" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.hopital.ui.controller.NavBarController">
 
     <padding>
-        <Insets top="8" right="20" bottom="8" left="20"/>
+        <Insets left="20.0" right="20.0" />
     </padding>
 
     <!-- Logo / Titre à gauche -->
-    <Label text="🏥 Gestion d'hôpital"
-           styleClass="nav-title"/>
+    <Label styleClass="nav-title" text="🏥 Gestion d'hôpital" />
 
     <!-- Espace flexible entre gauche et droite -->
-    <Region HBox.hgrow="ALWAYS"/>
+    <Region HBox.hgrow="ALWAYS" />
 
     <!-- Boutons du menu -->
-    <HBox spacing="12" alignment="CENTER_RIGHT">
+    <HBox alignment="CENTER_RIGHT" spacing="12">
 
-        <Button fx:id="btnPatients"
-                text="Patients"
-                onAction="#onPatients"
-                styleClass="nav-btn"/>
+        <Button fx:id="btnPatients" onAction="#onPatients" styleClass="nav-btn" text="Patients" />
 
-        <Button fx:id="btnMedecins"
-                text="Médecins"
-                onAction="#onMedecins"
-                styleClass="nav-btn"/>
+        <Button fx:id="btnMedecins" onAction="#onMedecins" styleClass="nav-btn" text="Médecins" />
 
-        <Button fx:id="btnRdv"
-                text="Rendez-vous"
-                onAction="#onRdv"
-                styleClass="nav-btn"/>
+        <Button fx:id="btnRdv" onAction="#onRdv" styleClass="nav-btn" text="Rendez-vous" />
 
         <!-- Déconnexion -->
-        <Button fx:id="btnLogout"
-                text="Déconnexion"
-                onAction="#onLogout"
-                styleClass="nav-btn logout-btn"/>
+        <Button fx:id="btnLogout" onAction="#onLogout" styleClass="nav-btn logout-btn" text="Déconnexion" />
+      <padding>
+         <Insets bottom="2.0" top="2.0" />
+      </padding>
     </HBox>
 
 </HBox>
-

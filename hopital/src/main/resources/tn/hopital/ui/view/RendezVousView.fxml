@@ -16,12 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane
-        styleClass="rendezvous-background"
-        stylesheets="@../css/rendezvous.css"
-        xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-        fx:controller="tn.hopital.ui.controller.RendezVousController">
+<BorderPane styleClass="rendezvous-background" stylesheets="@../css/rendezvous.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.hopital.ui.controller.RendezVousController">
 
     <!-- ==================== TOP BAR ==================== -->
     <top>
@@ -41,16 +36,16 @@
 
     <!-- ==================== CONTENU PRINCIPAL ==================== -->
     <center>
-        <VBox alignment="CENTER" spacing="5.0" styleClass="main-card">
+        <VBox alignment="CENTER" styleClass="main-card">
             <padding>
-                <Insets bottom="40" left="50" right="50" top="35" />
+                <Insets left="50.0" right="50.0" top="5.0" />
             </padding>
 
             <!-- ==================== FORMULAIRE ==================== -->
-            <VBox spacing="20" styleClass="form-section">
+            <VBox styleClass="form-section">
                 <Label styleClass="section-title" text="Planifier un rendez-vous" />
 
-                <GridPane hgap="20" vgap="16" styleClass="form-grid">
+                <GridPane hgap="20" styleClass="form-grid" vgap="16">
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" minWidth="140" />
                         <ColumnConstraints hgrow="ALWAYS" />
@@ -63,28 +58,31 @@
                         <RowConstraints />
                     </rowConstraints>
 
+                    <!-- Patient -->
                     <Label styleClass="field-label" text="Patient :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <ComboBox fx:id="cbPatient" promptText="Sélectionner un patient"
-                              styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <ComboBox fx:id="cbPatient" promptText="Sélectionner un patient" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
+                    <!-- Médecin -->
                     <Label styleClass="field-label" text="Médecin :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <ComboBox fx:id="cbMedecin" promptText="Sélectionner un médecin"
-                              styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="cbMedecin" promptText="Sélectionner un médecin" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
+                    <!-- Date -->
                     <Label styleClass="field-label" text="Date :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <DatePicker fx:id="dpDate" styleClass="date-picker"
-                                GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <DatePicker fx:id="dpDate" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
+                    <!-- Heure -->
                     <Label styleClass="field-label" text="Heure (HH:mm) :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="txtHeure" promptText="ex: 14:30" styleClass="text-field"
-                               GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="txtHeure" promptText="ex: 14:30" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 </GridPane>
 
-                <!-- Boutons -->
+                <!-- Boutons CRUD -->
                 <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="button-bar">
                     <Button onAction="#onAjouter" styleClass="btn-primary btn-large" text="Planifier" />
                     <Button onAction="#onSupprimer" styleClass="btn-danger btn-large" text="Supprimer" />
                     <Button onAction="#onClear" styleClass="btn-secondary btn-large" text="Vider" />
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
                 </HBox>
 
                 <VBox.margin>
@@ -93,22 +91,36 @@
             </VBox>
 
             <!-- ==================== TABLEAU ==================== -->
-            <VBox spacing="5.0" styleClass="table-section">
+            <VBox styleClass="table-section">
                 <Label styleClass="section-title" text="Liste des rendez-vous" />
-                <TableView fx:id="tableRdv" prefHeight="177.0" prefWidth="854.0" styleClass="modern-table">
+
+                <TableView fx:id="tableRdv" prefHeight="437.0" styleClass="modern-table">
                     <columns>
-                        <TableColumn fx:id="colId" prefWidth="172.0000194311142" text="ID" />
-                        <TableColumn fx:id="colPatient" prefWidth="232.79998779296875" text="Patient" />
-                        <TableColumn fx:id="colMedecin" prefWidth="188.79995727539062" text="Médecin" />
+                        <TableColumn fx:id="colId" prefWidth="154.40003621578217" text="ID" />
+                        <TableColumn fx:id="colPatient" prefWidth="207.20001220703125" text="Patient" />
+                        <TableColumn fx:id="colMedecin" prefWidth="208.79998779296875" text="Médecin" />
                         <!-- & doit être échappé en &amp; -->
-                        <TableColumn fx:id="colDateHeure" prefWidth="244.00006103515625" text="Date &amp; Heure" />
+                        <TableColumn fx:id="colDateHeure" prefWidth="266.39996337890625" text="Date &amp; Heure" />
                     </columns>
                 </TableView>
+
+                <!-- 🔍 Boutons de filtre basés sur les Streams -->
+                <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="838.0" spacing="10.0" styleClass="button-bar">
+                    <Button onAction="#onAfficherTousRdv" prefHeight="24.0" prefWidth="166.0" styleClass="btn-secondary" text="Tous les rendez-vous" />
+
+                    <Button onAction="#onAfficherRdvAVenir" styleClass="btn-primary" text="Rendez-vous à venir" />
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+                </HBox>
+
                 <padding>
                     <Insets bottom="15.0" left="30.0" right="30.0" />
                 </padding>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
             </VBox>
         </VBox>
     </center>
 </BorderPane>
-

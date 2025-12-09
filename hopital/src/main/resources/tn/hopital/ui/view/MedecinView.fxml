@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,11 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="medecin-background"
-            stylesheets="@../css/medecin.css"
-            xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.hopital.ui.controller.MedecinController">
+<BorderPane styleClass="medecin-background" stylesheets="@../css/medecin.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.hopital.ui.controller.MedecinController">
 
     <!-- ==================== BARRE DU HAUT ==================== -->
     <top>
@@ -32,7 +28,6 @@
             <!-- 🔹 Bandeau titre spécifique Médecins -->
             <VBox alignment="CENTER" styleClass="top-bar">
                 <Label styleClass="page-title" text="Gestion des Médecins" />
-                <Separator styleClass="separator" />
             </VBox>
 
         </VBox>
@@ -40,16 +35,16 @@
 
     <!-- ==================== CONTENU PRINCIPAL ==================== -->
     <center>
-        <VBox alignment="CENTER" spacing="10.0" styleClass="main-card">
+        <VBox alignment="CENTER" styleClass="main-card">
             <padding>
-                <Insets bottom="40" left="50" right="50" top="35" />
+                <Insets bottom="15.0" left="50.0" right="50.0" top="15.0" />
             </padding>
 
             <!-- ==================== FORMULAIRE ==================== -->
-            <VBox spacing="5.0" styleClass="form-section">
+            <VBox prefHeight="300.0" styleClass="form-section">
                 <Label styleClass="section-title" text="Informations du médecin" />
 
-                <GridPane hgap="20" styleClass="form-grid" vgap="16">
+                <GridPane hgap="10.0" styleClass="form-grid" vgap="10.0">
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" minWidth="140" />
                         <ColumnConstraints hgrow="ALWAYS" />
@@ -57,33 +52,23 @@
 
                     <!-- Ligne 1 -->
                     <Label styleClass="field-label" text="Nom :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="txtNom" promptText="Nom de famille"
-                               styleClass="text-field"
-                               GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtNom" promptText="Nom de famille" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                     <!-- Ligne 2 -->
                     <Label styleClass="field-label" text="Prénom :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="txtPrenom" promptText="Prénom"
-                               styleClass="text-field"
-                               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtPrenom" promptText="Prénom" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- Ligne 3 -->
                     <Label styleClass="field-label" text="Spécialité :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <ComboBox fx:id="cbSpecialite" promptText="Sélectionner une spécialité"
-                              styleClass="combo-box"
-                              GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <ComboBox fx:id="cbSpecialite" promptText="Sélectionner une spécialité" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                     <!-- Ligne 4 -->
                     <Label styleClass="field-label" text="Téléphone :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="txtTelephone" promptText="Ex: 99 123 456"
-                               styleClass="text-field"
-                               GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="txtTelephone" promptText="Ex: 99 123 456" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                     <!-- Ligne 5 (Email) -->
                     <Label styleClass="field-label" text="Email :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <TextField fx:id="txtEmail" promptText="exemple@hopital.tn"
-                               styleClass="text-field"
-                               GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <TextField fx:id="txtEmail" promptText="exemple@hopital.tn" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                     <rowConstraints>
                         <RowConstraints />
@@ -100,23 +85,48 @@
                     <Button onAction="#onModifier" styleClass="btn-success btn-large" text="Modifier" />
                     <Button onAction="#onSupprimer" styleClass="btn-danger btn-large" text="Supprimer" />
                     <Button onAction="#onClear" styleClass="btn-secondary btn-large" text="Vider" />
+               <padding>
+                  <Insets bottom="2.0" top="2.0" />
+               </padding>
                 </HBox>
             </VBox>
 
             <!-- ==================== TABLEAU DES MÉDECINS ==================== -->
             <VBox spacing="5.0" styleClass="table-section">
                 <Label styleClass="section-title" text="Liste des médecins enregistrés" />
-                <TableView fx:id="tableMedecins" prefHeight="219.0" prefWidth="911.0" styleClass="modern-table">
+                <TableView fx:id="tableMedecins" prefHeight="157.0" styleClass="modern-table">
                     <columns>
-                        <TableColumn fx:id="colId" prefWidth="80.0" text="ID" />
-                        <TableColumn fx:id="colNom" prefWidth="140.0" text="Nom" />
+                        <TableColumn fx:id="colId" prefWidth="104.80002057552338" text="ID" />
+                        <TableColumn fx:id="colNom" prefWidth="117.59996795654297" text="Nom" />
                         <TableColumn fx:id="colPrenom" prefWidth="140.0" text="Prénom" />
                         <TableColumn fx:id="colSpecialite" prefWidth="140.0" text="Spécialité" />
-                        <TableColumn fx:id="colTelephone" prefWidth="160.0" text="Téléphone" />
-                        <TableColumn fx:id="colEmail" prefWidth="250.0" text="Email" />
+                        <TableColumn fx:id="colTelephone" prefWidth="146.39993286132812" text="Téléphone" />
+                        <TableColumn fx:id="colEmail" prefWidth="248.800048828125" text="Email" />
                     </columns>
                 </TableView>
             </VBox>
+
+            <!-- ==================== ZONE STATISTIQUES (SET / MAP / STREAM) ==================== -->
+            <HBox prefHeight="166.0" prefWidth="899.0" spacing="20" styleClass="stats-section">
+                <!-- SET : spécialités distinctes -->
+                <VBox prefWidth="260" spacing="5">
+                    <Label styleClass="section-title" text="Spécialités distinctes" />
+                    <ListView fx:id="listSpecialites" prefHeight="220.0" prefWidth="246.0" />
+                </VBox>
+
+                <!-- MAP + STREAM : nb médecins par spécialité -->
+                <VBox prefWidth="320" spacing="5">
+                    <Label styleClass="section-title" text="Nb de médecins par spécialité " />
+                    <ListView fx:id="listStatsSpecialites" prefHeight="220.0" prefWidth="320.0" />
+                </VBox>
+
+                <!-- MAP<Integer, Medecin> : index médecins par ID -->
+                <VBox prefWidth="320" spacing="5">
+                    <Label styleClass="section-title" text="Index des médecins par ID " />
+                    <ListView fx:id="listMedecinsParId" prefHeight="220.0" prefWidth="320.0" />
+                </VBox>
+            </HBox>
+
         </VBox>
     </center>
 </BorderPane>

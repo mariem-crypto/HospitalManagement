@@ -140,8 +140,8 @@ SplitPane > VBox {
 
 .top-bar {
     -fx-background-color: rgba(255,255,255,0.15);
-    -fx-padding: 20;
-    -fx-spacing: 8;
+    -fx-padding: 10;
+    -fx-spacing: 4;
 }
 
 .page-title {

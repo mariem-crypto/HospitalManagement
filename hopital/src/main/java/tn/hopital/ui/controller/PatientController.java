@@ -10,7 +10,12 @@ import tn.hopital.ui.util.AlertUtil;
 
 import java.time.LocalDate;
 
+/**
+ * Contrôleur JavaFX pour l'écran de gestion des patients.
+ */
 public class PatientController {
+
+    // ---------- Champs du formulaire ----------
 
     @FXML
     private TextField txtNom;
@@ -28,7 +33,9 @@ public class PatientController {
     private TextField txtTelephone;
 
     @FXML
-    private TextField txtEmail;   // 👉 nouveau champ
+    private TextField txtEmail;   // 👉 champ email
+
+    // ---------- Table des patients ----------
 
     @FXML
     private TableView<Patient> tablePatients;
@@ -43,40 +50,59 @@ public class PatientController {
     private TableColumn<Patient, String> colPrenom;
 
     @FXML
-    private TableColumn<Patient, String> colAdresse;
+    private TableColumn<Patient, LocalDate> colDateNaissance;
 
     @FXML
-    private TableColumn<Patient, LocalDate> colDateNaissance;
+    private TableColumn<Patient, String> colAdresse;
 
     @FXML
     private TableColumn<Patient, String> colTelephone;
 
     @FXML
-    private TableColumn<Patient, String> colEmail;  // 👉 nouvelle colonne
+    private TableColumn<Patient, String> colEmail;  // 👉 colonne email
+
+    // ---------- (optionnel) liste des emails distincts ----------
+
+    // Ajoute ceci dans le FXML si tu veux l'utiliser :
+    // <ListView fx:id="listEmailsPatients" ... />
+    @FXML
+    private ListView<String> listEmailsPatients;
+
+    // ---------- Service & données ----------
 
     private final HopitalService service = new HopitalService();
-    private ObservableList<Patient> patients = FXCollections.observableArrayList();
+    private final ObservableList<Patient> patients = FXCollections.observableArrayList();
 
+    // ============================================================
+    //                      INITIALISATION
+    // ============================================================
     @FXML
     private void initialize() {
         // Configuration des colonnes
         colId.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId()).asObject());
+
         colNom.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getNom()));
+
         colPrenom.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getPrenom()));
+
         colDateNaissance.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getDateNaissance()));
-        colTelephone.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
+
         colAdresse.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getAdresse()));
+
+        colTelephone.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getTelephone()));
+
         colEmail.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getEmail()));
 
-        // Charger les données
+        // Charger les données initiales
         rafraichirTable();
+        rafraichirListeEmails();   // pour la partie Set + Stream
 
         // Quand on clique sur une ligne → remplir le formulaire
         tablePatients.getSelectionModel().selectedItemProperty().addListener(
@@ -84,9 +110,17 @@ public class PatientController {
         );
     }
 
+    // Liste des patients dans la TableView
     private void rafraichirTable() {
         patients.setAll(service.listerPatients());
         tablePatients.setItems(patients);
+    }
+
+    // (Optionnel) Rafraîchir la ListView des emails distincts
+    private void rafraichirListeEmails() {
+        if (listEmailsPatients != null) {
+            listEmailsPatients.getItems().setAll(service.listerEmailsPatients());
+        }
     }
 
     private void afficherDetailsPatient(Patient p) {
@@ -100,6 +134,10 @@ public class PatientController {
         }
     }
 
+    // ============================================================
+    //                      ACTIONS BOUTONS
+    // ============================================================
+
     @FXML
     private void onAjouter() {
         try {
@@ -110,11 +148,27 @@ public class PatientController {
             String telephone = txtTelephone.getText();
             String email = txtEmail.getText();
 
-            // Ici j’utilise le constructeur avec email
+            // --- validations simples ---
+            if (nom == null || nom.isBlank() ||
+                prenom == null || prenom.isBlank() ||
+                dateNaissance == null ||
+                adresse == null || adresse.isBlank() ||
+                telephone == null || telephone.isBlank() ||
+                email == null || email.isBlank()) {
+
+                throw new IllegalArgumentException("Tous les champs sont obligatoires.");
+            }
+
+            if (!email.contains("@")) {
+                throw new IllegalArgumentException("Email invalide (il doit contenir '@').");
+            }
+
+            // Utilise le constructeur avec email
             Patient p = new Patient(nom, prenom, dateNaissance, adresse, telephone, email);
             service.ajouterPatient(p);
 
             rafraichirTable();
+            rafraichirListeEmails(); // mise à jour des emails distincts
             clearForm();
             AlertUtil.showInfo("Succès", "Patient ajouté avec succès.");
         } catch (IllegalArgumentException e) {
@@ -134,16 +188,28 @@ public class PatientController {
         }
 
         try {
+            String email = txtEmail.getText();
+
+            if (email == null || email.isBlank()) {
+                throw new IllegalArgumentException("L'email est obligatoire.");
+            }
+            if (!email.contains("@")) {
+                throw new IllegalArgumentException("Email invalide (il doit contenir '@').");
+            }
+
             selection.setNom(txtNom.getText());
             selection.setPrenom(txtPrenom.getText());
             selection.setDateNaissance(dpDateNaissance.getValue());
             selection.setAdresse(txtAdresse.getText());
             selection.setTelephone(txtTelephone.getText());
-            selection.setEmail(txtEmail.getText());
+            selection.setEmail(email);
 
             service.modifierPatient(selection);
             rafraichirTable();
+            rafraichirListeEmails();
             AlertUtil.showInfo("Succès", "Patient modifié avec succès.");
+        } catch (IllegalArgumentException e) {
+            AlertUtil.showError("Données invalides", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             AlertUtil.showError("Erreur", "Erreur lors de la modification du patient.");
@@ -167,6 +233,7 @@ public class PatientController {
             try {
                 service.supprimerPatient(selection.getId());
                 rafraichirTable();
+                rafraichirListeEmails();
                 clearForm();
                 AlertUtil.showInfo("Succès", "Patient supprimé.");
             } catch (Exception e) {
@@ -182,6 +249,7 @@ public class PatientController {
         tablePatients.getSelectionModel().clearSelection();
     }
 
+    // Nettoyage du formulaire
     private void clearForm() {
         txtNom.clear();
         txtPrenom.clear();
@@ -191,3 +259,4 @@ public class PatientController {
         txtEmail.clear();
     }
 }
+
